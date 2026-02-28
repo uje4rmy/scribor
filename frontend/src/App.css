@@ -12,3 +12,8 @@
 .fade-in {
   animation: fade-in 0.6s ease-out both;
 }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 10rem;
+}
