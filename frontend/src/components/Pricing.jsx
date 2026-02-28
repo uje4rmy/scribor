@@ -2,7 +2,6 @@ const tiers = [
   {
     name: "Free",
     monthly: "$0",
-    yearly: "$0",
     value: "All essential features",
     description: [
       "Structured AML/CTF and conflict intake",
@@ -14,8 +13,7 @@ const tiers = [
   },
   {
     name: "Enterprise",
-    monthly: "$495",
-    yearly: "$445",
+    monthly: "Contact Us",
     badge: "Recommended",
     value: "Enterprise-grade governance",
     description: [
