@@ -5,6 +5,7 @@ import Pricing from "../components/Pricing";
 import Tranch2 from "../components/Tranch2";
 import FAQAccordian from "../components/FAQAccordian";
 import HomeHeader from "../components/HomeHeader";
+import HomeFooter from "../components/HomeFooter";
 
 const auditLabels = [
   { label: "Pipeline", value: "12 active matters" },
@@ -206,6 +207,8 @@ const Homepage = () => {
           <div className="mt-5">{<FAQAccordian items={faqItems} />}</div>
         </section>
       </main>
+
+      <HomeFooter />
     </>
   );
 };
