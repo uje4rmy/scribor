@@ -1,27 +1,27 @@
 const tiers = [
   {
     name: "Free",
-    monthly: "$0",
+    price: "$0",
     value: "All essential features",
     description: [
       "Structured AML/CTF and conflict intake",
-      "Identity and entity verification capture",
-      "Clear risk assessment with written reasoning",
-      "Audit-ready PDF exports",
-      "Immutable activity log",
+      "Client-completed onboarding with automatic matter creation",
+      "Risk assessment with documented reasoning",
+      "Transaction recording and financial activity log",
+      "Audit-ready PDF export and immutable activity history",
     ],
   },
   {
     name: "Enterprise",
-    monthly: "Contact Us",
+    price: "Contact Us",
     badge: "Recommended",
     value: "Enterprise-grade governance",
     description: [
-      "Custom approval and governance rules",
-      "Firm-specific risk frameworks",
-      "Advanced audit and regulator readiness",
-      "Dedicated onboarding and support",
-      "Contracted SLAs",
+      "Full KYC verification and PEP screening",
+      "Suspicious Matter Report generation",
+      "Enhanced due diligence workflows",
+      "Custom approval and governance controls",
+      "Advanced audit reporting, onboarding support, and SLAs",
     ],
   },
 ];
@@ -60,10 +60,16 @@ const Pricing = () => {
             <div className="text-[13px] font-medium text-slate-900">
               {tier.name}
             </div>
-            <div className="mt-3 text-[30px] font-medium text-slate-900">
-              {tier.monthly}
+            <div
+              className={`mt-3  font-medium text-slate-900 ${tier.name === "Enterprise" ? "text-[25px]" : "text-[30px]"}`}
+            >
+              {tier.price}
+              {tier.name !== "Enterprise" && (
+                <span className="pl-2 text-[12px] text-slate-400">
+                  / month + GST
+                </span>
+              )}
             </div>
-            <div className="text-[12px] text-slate-400">/ month + GST</div>
             <div className="mt-2 text-[12px] text-slate-500">{tier.value}</div>
             <button
               type="button"

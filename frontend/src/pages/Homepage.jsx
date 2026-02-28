@@ -16,21 +16,21 @@ const auditLabels = [
 const stepLabels = [
   {
     step: "1",
-    title: "Intake",
+    title: "Client Onboarding",
     description:
-      "Upload a client information document to auto-fill the form, or type it in manually.",
+      "Send a secure link to the client to complete their details. Once submitted, the system automatically creates a structured client and matter profile, ready for review.",
   },
   {
     step: "2",
-    title: "Run checks",
+    title: "Risk & Compliance Review",
     description:
-      "Open the client profile, assess risk and conflicts using PEP screening, sanctions checks, ASIC verification, and ABN or ACN lookups, with lawyer approval recorded.",
+      "Assess the client profile, determine risk, and record relevant financial activity. Run KYC and PEP screening, request and log SOW or SOF verification, generate audit reports, and prepare suspicious matter reports where required.",
   },
   {
     step: "3",
-    title: "Export audit report",
+    title: "Approval & Record Management",
     description:
-      "Generate the audit report as a PDF, then save it to the matter file.",
+      "After review, formally approve the matter. The signed-off client profile is saved to file, with version control and prompts to update records if circumstances change.",
   },
 ];
 
@@ -74,7 +74,7 @@ const Homepage = () => {
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
               Now in Private Beta
             </div>
-            <h1 className="mt-5 text-[48px] font-bold leading-[1.05] tracking-[-0.05em] text-slate-900 md:text-[56px]">
+            <h1 className="mt-5 text-[48px] font-bold leading-[1.05] text-slate-900 md:text-[56px]">
               #1 AML/CTF & Conflict Platform for{" "}
               <span className="bg-gradient-to-r from-slate-900 to-slate-500 bg-clip-text text-transparent">
                 Australian Law Firms
@@ -164,35 +164,36 @@ const Homepage = () => {
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-[12px] text-slate-200">
               <div className="text-[20px] font-medium text-white">
-                ≈ 50 minutes saved per matter
+                ≈ 20 minutes saved per matter
               </div>
               <p className="mt-2 text-[12px] text-slate-300">
-                By consolidating intake, AML/CTF checks, conflict checks, and
-                audit documentation into one workflow.
+                By consolidating intake, KYC, PEP screening, conflict checks,
+                transaction recording, and audit documentation into one
+                structured workflow.
               </p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-[12px] text-slate-200">
               <div className="text-[20px] font-medium text-white">
-                40-80 hours per month
+                ≈ 17-33 hours per month
               </div>
               <p className="mt-2 text-[12px] text-slate-300">
-                Based on firms handling 50-100 matters per month using standard
-                compliance processes.
+                Based on firms handling 50–100 matters per month requiring
+                compliance review.
               </p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-[12px] text-slate-200">
               <div className="text-[20px] font-medium text-white">
-                ≈ $4,000 / month in recovered capacity
+                ≈ $1,700-$3,300 per month in recovered capacity
               </div>
               <p className="mt-2 text-[12px] text-slate-300">
-                Calculated using a conservative blended internal cost of $100
-                per hour.
+                Calculated using a blended internal cost of $100 per hour.
               </p>
             </div>
           </div>
           <div className="mt-4 text-[11px] text-slate-400">
-            Estimates based on typical firm workflows and conservative
-            assumptions. Actual results may vary by matter type and volume.
+            Estimates assume consistent matter volume and standard compliance
+            requirements. Actual results vary by matter complexity and internal
+            processes.
           </div>
         </section>
 
