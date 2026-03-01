@@ -3,17 +3,12 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./index.css";
 import App from "./App.jsx";
-import SignIn from "./pages/SignIn.jsx";
 import { Auth0Provider } from "@auth0/auth0-react";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-  },
-  {
-    path: "/signin",
-    element: <SignIn />,
   },
 ]);
 
