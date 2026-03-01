@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 const HomeHeader = () => {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/80 backdrop-blur">
@@ -19,12 +21,12 @@ const HomeHeader = () => {
           </a>
         </nav>
         <div className="flex items-center justify-end gap-5 text-[15px]">
-          <button
-            type="button"
+          <Link
+            to="signin"
             className="text-slate-500 transition hover:text-slate-900"
           >
             Sign In
-          </button>
+          </Link>
 
           <a
             href="/"
