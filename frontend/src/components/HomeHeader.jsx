@@ -1,6 +1,10 @@
-import { Link } from "react-router";
+import { useAuth0 } from "@auth0/auth0-react";
+import SignOutButton from "./SignOutButton";
+import SignInButton from "../components/SignInButton";
 
 const HomeHeader = () => {
+  const { isAuthenticated, isLoading, error } = useAuth0();
+
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/80 backdrop-blur">
       <div className="mx-auto grid h-16 max-w-screen-2xl grid-cols-[1fr_auto_1fr] items-center px-8 text-[14px] text-slate-700 lg:px-12">
@@ -21,12 +25,17 @@ const HomeHeader = () => {
           </a>
         </nav>
         <div className="flex items-center justify-end gap-5 text-[15px]">
-          <Link
-            to="signin"
-            className="text-slate-500 transition hover:text-slate-900"
-          >
-            Sign In
-          </Link>
+          {!error && isLoading && (
+            <p className="text-slate-500 transition hover:text-slate-900">
+              Loading...
+            </p>
+          )}
+
+          {!isAuthenticated && !isLoading ? (
+            <SignInButton />
+          ) : (
+            <SignOutButton />
+          )}
 
           <a
             href="/"

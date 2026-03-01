@@ -6,6 +6,7 @@ import Tranch2 from "../components/Tranch2";
 import FAQAccordian from "../components/FAQAccordian";
 import HomeHeader from "../components/HomeHeader";
 import HomeFooter from "../components/HomeFooter";
+import hero from "../assets/hero.png";
 
 const auditLabels = [
   { label: "Pipeline", value: "12 active matters" },
@@ -68,8 +69,8 @@ const Homepage = () => {
       <HomeHeader />
 
       <main className="mx-auto max-w-screen-2xl px-8 pb-24 lg:px-12">
-        <section className="fade-in grid grid-cols-1 gap-14 pb-20 pt-16 lg:grid-cols-[minmax(640px,1fr)_minmax(0,600px)] lg:items-center">
-          <div className="max-w-[680px]">
+        <section className="fade-in grid grid-cols-1 gap-0 pr-10 pb-20 pt-16 lg:grid-cols-[minmax(640px,1fr)_minmax(0,600px)] lg:items-center">
+          <div className="max-w-[680px] pl-5">
             <div className="inline-flex items-center gap-2 rounded-full border border-slate-200/70 bg-white/70 px-4 py-1.5 text-[12px] text-slate-500">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
               Now in Private Beta
@@ -94,7 +95,8 @@ const Homepage = () => {
             </div>
           </div>
 
-          <HomeMainDiagram />
+          <img src={hero} alt="Hero image" className="w-full h-auto" />
+          {/* <HomeMainDiagram /> */}
         </section>
 
         <section className="fade-in rounded-3xl bg-slate-950 bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.18),_transparent_55%)] px-8 py-14 text-slate-100 shadow-[0_8px_24px_rgba(15,23,42,0.18)]">
