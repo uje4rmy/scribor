@@ -210,7 +210,7 @@ const Sidebar = () => {
         <Link
           to="/"
           aria-label="Go to dashboard"
-          className="text-[16px] font-medium tracking-[-0.02em] text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="pl-1 text-[16px] font-medium tracking-[-0.02em] text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
         >
           Scribor
         </Link>
