@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import { Auth0Provider } from "@auth0/auth0-react";
 import Intake from "./pages/auth/Intake.jsx";
 import DueDiligence from "./pages/auth/DueDillgence.jsx";
+import Help from "./pages/auth/Help.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
     path: "/due-diligence",
     element: <DueDiligence />,
   },
+  { path: "/help", element: <Help /> },
   {
     path: "/intake",
     element: <Intake />,
