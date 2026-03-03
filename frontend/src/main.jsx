@@ -8,6 +8,7 @@ import Intake from "./pages/auth/Intake.jsx";
 import DueDiligence from "./pages/auth/DueDillgence.jsx";
 import Help from "./pages/auth/Help.jsx";
 import Settings from "./pages/auth/Settings.jsx";
+import Billing from "./pages/auth/Billing.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   },
   { path: "/help", element: <Help /> },
   { path: "settings", element: <Settings /> },
+  {
+    path: "/billing",
+    element: <Billing />,
+  },
   {
     path: "/intake",
     element: <Intake />,
