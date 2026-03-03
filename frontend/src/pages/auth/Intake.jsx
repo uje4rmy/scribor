@@ -1,4 +1,5 @@
 import AuthHeader from "../../components/AuthHeader";
+import IntakeProgress from "../../components/IntakeProgress/IntakeProgress";
 import Sidebar from "../../components/Sidebar";
 const Intake = () => {
 return (
@@ -10,7 +11,7 @@ return (
 
             <div>
                 <AuthHeader />
-                <div className="flex h-16 items-center justify-between px-8">
+                <div className="flex h-20 items-center justify-between px-8">
                     <div>
                         <h1 className="text-2xl font-semibold">Intake</h1>
                         <div className="mt-1 text-xs text-gray-500">
@@ -36,6 +37,10 @@ return (
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="flex items-center justify-between px-8">
+                    <IntakeProgress />
+                    
                 </div>
             </div>
         </div>
