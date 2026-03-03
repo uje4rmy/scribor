@@ -9,12 +9,14 @@ import DueDiligence from "./pages/auth/DueDillgence.jsx";
 import Help from "./pages/auth/Help.jsx";
 import Settings from "./pages/auth/Settings.jsx";
 import Billing from "./pages/auth/Billing.jsx";
+import Dashboard from "./pages/auth/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
   },
+  { path: "/dashboard", element: <Dashboard /> },
   {
     path: "/due-diligence",
     element: <DueDiligence />,
@@ -42,6 +44,9 @@ createRoot(document.getElementById("root")).render(
       authorizationParams={{
         redirect_uri: window.location.origin,
       }}
+      cacheLocation="localstorage"
+      useRefreshTokens={true}
+      useRefreshTokensFallback={true}
     >
       <RouterProvider router={router} />
     </Auth0Provider>
