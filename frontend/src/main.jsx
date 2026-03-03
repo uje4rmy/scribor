@@ -4,8 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import "./index.css";
 import App from "./App.jsx";
 import { Auth0Provider } from "@auth0/auth0-react";
-import SignIn from "./pages/SignIn.jsx";
 import Intake from "./pages/auth/Intake.jsx";
+import DueDiligence from "./pages/auth/DueDillgence.jsx";
 
 const router = createBrowserRouter([
   {
@@ -13,8 +13,8 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/signin",
-    element: <SignIn />,
+    path: "/due-diligence",
+    element: <DueDiligence />,
   },
   {
     path: "/intake",
