@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import "./index.css";
 import App from "./App.jsx";
 import SignIn from "./pages/SignIn.jsx";
+import Intake from "./pages/auth/Intake.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,11 @@ const router = createBrowserRouter([
     path: "/signin",
     element: <SignIn />,
   },
+  {
+    path: "/intake",
+    element: <Intake />,
+  }
+  
 ]);
 
 createRoot(document.getElementById("root")).render(

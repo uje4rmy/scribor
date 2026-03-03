@@ -50,7 +50,8 @@ const navItems = [
       </svg>
     ),
   },
-  {
+   
+{
     label: "Matters",
     href: "/matters",
     icon: (
@@ -72,6 +73,31 @@ const navItems = [
           stroke="currentColor"
           strokeWidth="1.4"
         />
+      </svg>
+    ),
+  },
+  {
+    label: "Intake",
+    href: "/intake",
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+        <rect 
+        x="4" 
+        y="4" 
+        width="16" 
+        height="16" 
+        rx="2" 
+        ry="2" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="1.4" 
+        />
+        <path 
+        d="M8 9h8M8 13h5" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="1.4"
+         />
       </svg>
     ),
   },
@@ -177,7 +203,7 @@ const navItems = [
 // Main Sidebar componenent
 const Sidebar = () => {
   return (
-    <aside className="w-56 flex-col border-r border-slate-200/80 bg-white/95 px-3 py-4">
+    <aside className="fixed h-screen w-56 flex flex-col border-r border-slate-200/80 bg-white/95 px-3 py-4">
       <div className="mb-4 flex items-center px-1">
         <Link
           to="/"
@@ -199,6 +225,19 @@ const Sidebar = () => {
           className="w-full rounded-full border border-slate-200/80 bg-slate-50/80 px-3 py-1.5 text-[12px] text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-200"
         />
       </div>
+
+      <nav className="flex flex-col gap-1 px-1">
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            to={item.href}
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-[14px] text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+            >
+            <span className="text-slate-500">{item.icon}</span>
+            <span>{item.label}</span>
+          </Link>
+        ))}
+      </nav>
     </aside>
   );
 };
