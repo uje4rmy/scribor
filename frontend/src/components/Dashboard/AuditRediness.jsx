@@ -55,7 +55,7 @@ function CalculateAuditReadiness(baseValue = 60, n = 30) {
 
 const AuditReadiness = ({
   // Props for demo purposes - in real implementation, these would be dynamic based on API data and user selection
-    selectedRange = 7,
+    period = 7,
     loading = false,
     hasData = true,
     amlScore = 47,
@@ -114,11 +114,11 @@ const AuditReadiness = ({
         </div>
 
         <span className="text-[10px] text-slate-400">
-          {selectedRange === "all"
+          {period === 0
             ? "all time"
-            : selectedRange === "custom"
+            : period === "custom"
             ? "custom range"
-            : `vs last ${selectedRange}d`}
+            : `vs last ${period}d`}
         </span>
       </div>
 

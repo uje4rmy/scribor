@@ -1,4 +1,4 @@
-import AuthHeader from "../../components/AuthHeader";
+import AppTopBar from "../../components/AppTopBar";
 import IntakeProgress from "../../components/IntakeProgress/IntakeProgress";
 import Sidebar from "../../components/Sidebar";
 const Intake = () => {
@@ -10,7 +10,7 @@ return (
             </div>
 
             <div>
-                <AuthHeader />
+                <AppTopBar />
                 <div className="flex h-20 items-center justify-between px-8">
                     <div>
                         <h1 className="text-2xl font-semibold">Intake</h1>
