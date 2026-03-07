@@ -10,6 +10,7 @@ import Help from "./pages/auth/Help.jsx";
 import Settings from "./pages/auth/Settings.jsx";
 import Billing from "./pages/auth/Billing.jsx";
 import Dashboard from "./pages/auth/Dashboard.jsx";
+import Matters from "./pages/auth/matters/Matters.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
     path: "/billing",
     element: <Billing />,
   },
+  { path: "/matters", element: <Matters /> },
   {
     path: "/intake",
     element: <Intake />,
