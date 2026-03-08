@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import BoardCard from "./BoardCard";
 
-const MattersBoard = ({ matters }) => {
+const MattersBoard = ({ matters, setMatters }) => {
   const BOARD_COLUMNS = [
     { id: "todo", label: "To do", menuLabel: "Move to To Do" },
     {
@@ -50,6 +50,7 @@ const MattersBoard = ({ matters }) => {
                   key={i.client_id}
                   intake={i}
                   boardColumns={BOARD_COLUMNS}
+                  setMatters={setMatters}
                 />
               ))}
             </div>

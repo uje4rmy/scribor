@@ -75,7 +75,7 @@ const Matters = () => {
             </div>
           ) : (
             <>
-              <MattersBoard matters={matters} />
+              <MattersBoard matters={matters} setMatters={setMatters} />
             </>
           )}
         </div>

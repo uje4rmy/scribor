@@ -4,7 +4,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import BoardDropdownMenu from "./BoardDropdownMenu";
 
-const BoardCard = ({ intake, boardColumns }) => {
+const BoardCard = ({ intake, boardColumns, setMatters }) => {
   function levelColors(level) {
     const s = level.toLowerCase();
     switch (s) {
@@ -29,7 +29,11 @@ const BoardCard = ({ intake, boardColumns }) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="group relative mb-2 flex h-[132px] flex-col rounded-[10px] border border-gray-200 bg-white p-3 text-left transition hover:border-gray-300 hover:bg-gray-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-300">
-          <BoardDropdownMenu intake={intake} boardColumns={boardColumns} />
+          <BoardDropdownMenu
+            intake={intake}
+            boardColumns={boardColumns}
+            setMatters={setMatters}
+          />
 
           <div className="min-h-0 flex-1 flex flex-col gap-1">
             <div className="flex items-center gap-1.5">

@@ -77,31 +77,6 @@ const navItems = [
     ),
   },
   {
-    label: "Intake",
-    href: "/intake",
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-        <rect
-          x="4"
-          y="4"
-          width="16"
-          height="16"
-          rx="2"
-          ry="2"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.4"
-        />
-        <path
-          d="M8 9h8M8 13h5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.4"
-        />
-      </svg>
-    ),
-  },
-  {
     label: "Due Diligence",
     href: "/due-diligence",
     icon: (

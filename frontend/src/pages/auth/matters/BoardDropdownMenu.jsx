@@ -8,14 +8,40 @@ import {
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ExternalLink, Download, FolderInput } from "lucide-react";
+import { Link } from "react-router";
+import axios from "axios";
 
-const BoardDropdownMenu = ({ intake, boardColumns }) => {
+const BoardDropdownMenu = ({ intake, boardColumns, setMatters }) => {
+  async function updateStatus(statusId) {
+    try {
+      await axios.post("http://localhost:8081/api/matters/update-status", {
+        clientId: intake.client_id,
+        clientStatus: statusId,
+      });
+
+      setMatters((prev) =>
+        prev.map((matter) =>
+          matter.client_id === intake.client_id
+            ? { ...matter, client_status: statusId }
+            : matter,
+        ),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
-    <DropdownMenuContent>
+    <DropdownMenuContent className="overflow-visible">
       <DropdownMenuGroup>
         <DropdownMenuItem>
-          <ExternalLink className="mr-2 h-4 w-4" />
-          Open Client Profile
+          <Link
+            to={`/client-profile/${intake.client_id}`}
+            className="flex items-center"
+          >
+            <ExternalLink className="mr-2 h-4 w-4" />
+            Open Client Profile
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
@@ -41,7 +67,12 @@ const BoardDropdownMenu = ({ intake, boardColumns }) => {
             {boardColumns
               .filter((e) => e.id !== intake.client_status)
               .map((status) => (
-                <DropdownMenuItem key={status.id}>
+                <DropdownMenuItem
+                  key={status.id}
+                  onClick={() => {
+                    updateStatus(status.id);
+                  }}
+                >
                   {status.menuLabel}
                 </DropdownMenuItem>
               ))}
