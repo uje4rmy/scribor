@@ -11,6 +11,7 @@ import Settings from "./pages/auth/Settings.jsx";
 import Billing from "./pages/auth/Billing.jsx";
 import Dashboard from "./pages/auth/Dashboard.jsx";
 import Matters from "./pages/auth/matters/Matters.jsx";
+import ClientProfile from "./pages/auth/matters/clientProfiles/ClientProfile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
     element: <Billing />,
   },
   { path: "/matters", element: <Matters /> },
+  { path: "/client-profile/:id", element: <ClientProfile /> },
   {
     path: "/intake",
     element: <Intake />,
