@@ -1,14 +1,13 @@
 import styles from "./FormProgress.module.css";
 const steps = [
     {id: 1, label: "Basic Details", status: "uncomplete"},
-    {id: 2, label: "Client Type", status: "uncomplete"},
-    {id: 3, label: "Requested Service", status: "uncomplete"},
-    {id: 4, label: "Ownership & Control", status: "uncomplete"},
-    {id: 5, label: "Source of Funds", status: "uncomplete"},
-    {id: 6, label: "Country Exposure", status: "uncomplete"},
-    {id: 7, label: "PEP and Sanctions Declarations", status: "uncomplete"},
-    {id: 8, label: "Nature & Purpose", status: "uncomplete"},
-    {id: 9, label: "Declarations", status: "uncomplete"},
+    {id: 2, label: "Client Type & Service", status: "uncomplete"},
+    {id: 3, label: "Ownership & Control", status: "uncomplete"},
+    {id: 4, label: "Source of Funds", status: "uncomplete"},
+    {id: 5, label: "Country Exposure", status: "uncomplete"},
+    {id: 6, label: "PEP and Sanctions Declarations", status: "uncomplete"},
+    {id: 7, label: "Nature & Purpose", status: "uncomplete"},
+    {id: 8, label: "Declarations", status: "uncomplete"},
 
 
 ]
