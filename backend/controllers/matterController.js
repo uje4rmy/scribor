@@ -25,9 +25,6 @@ module.exports = {
         "SELECT * FROM CLIENT c JOIN MATTER m ON c.client_id = m.client_id JOIN ENTITY e ON c.client_id = e.client_id WHERE user_id = (?)";
       const [results] = await pool.query(query, [id]);
 
-      const formattedDob = results[0].client_dob.toISOString().slice(0, 10);
-      results[0].client_dob = formattedDob;
-
       res.json(results);
     } catch (error) {
       console.error("GET Query Error: ", error);
