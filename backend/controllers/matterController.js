@@ -44,4 +44,54 @@ module.exports = {
       console.error("POST Query Error: ", error);
     }
   },
+  postUpdateClientProfile: async (req, res) => {
+    const connection = await pool.getConnection();
+
+    try {
+      const data = req.body;
+
+      const sortByPrefix = (prefix) =>
+        Object.fromEntries(
+          Object.entries(req.body).filter(
+            ([key]) => key.startsWith(prefix) && !key.endsWith("_id"),
+          ),
+        );
+
+      const clientTable = sortByPrefix("client_");
+      const matterTable = sortByPrefix("matter_");
+      const entityTable = sortByPrefix("entity_");
+
+      await connection.beginTransaction();
+
+      if (Object.keys(clientTable).length) {
+        await connection.query("UPDATE CLIENT SET ? WHERE client_id = ?", [
+          clientTable,
+          data.client_id,
+        ]);
+      }
+
+      if (Object.keys(matterTable).length) {
+        await connection.query("UPDATE MATTER SET ? WHERE matter_id = ?", [
+          matterTable,
+          data.matter_id,
+        ]);
+      }
+
+      if (Object.keys(entityTable).length) {
+        await connection.query("UPDATE ENTITY SET ? WHERE entity_id = ?", [
+          entityTable,
+          data.entity_id,
+        ]);
+      }
+
+      await connection.commit();
+      console.log(matterTable);
+      res.json({ success: true });
+    } catch (error) {
+      await connection.rollback();
+      console.error("POST Query Error: ", error);
+    } finally {
+      connection.release();
+    }
+  },
 };

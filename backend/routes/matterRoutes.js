@@ -9,5 +9,9 @@ router.get(
 );
 
 router.post("/matters/update-status", matterController.postUpdateStatus);
+router.post(
+  "/matters/update-client-profile",
+  matterController.postUpdateClientProfile,
+);
 
 module.exports = router;
