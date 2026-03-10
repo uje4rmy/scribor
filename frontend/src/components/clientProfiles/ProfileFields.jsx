@@ -62,6 +62,7 @@ const PROFILE_FIELDS = [
     key: "matter_band_value",
     label: "Estimated Band Value",
     section: "matter",
+    type: "band",
   },
 ];
 

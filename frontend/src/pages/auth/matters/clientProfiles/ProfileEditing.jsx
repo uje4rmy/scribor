@@ -1,7 +1,8 @@
-import PROFILE_FIELDS from "./ProfileFields";
+import PROFILE_FIELDS from "../../../../components/clientProfiles/ProfileFields";
 import SectionLabel from "../../../../components/clientProfiles/SectionLabel";
 import BooleanDropdown from "../../../../components/clientProfiles/BooleanDropdown";
 import InputRow from "../../../../components/clientProfiles/InputRow";
+import BandDropdown from "../../../../components/clientProfiles/BandDropdown";
 
 function getSectionKey(sectionKey) {
   switch (sectionKey) {
@@ -63,6 +64,12 @@ const ProfileEditing = ({
                       }
                       rows={3}
                       className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+                    />
+                  ) : type === "band" ? (
+                    <BandDropdown
+                      profileDraft={profileDraft}
+                      setProfileDraft={setProfileDraft}
+                      fieldKey={key}
                     />
                   ) : (
                     <input

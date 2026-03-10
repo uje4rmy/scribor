@@ -8,6 +8,7 @@ import Payments from "./Payments";
 import ProfileEditing from "./ProfileEditing";
 import SectionLabel from "../../../../components/clientProfiles/SectionLabel";
 import InputRow from "../../../../components/clientProfiles/InputRow";
+import MATTER_BAND_VALUES from "../../../../components/clientProfiles/BandValues";
 
 function Card({ title, headerAction, children, className = "" }) {
   return (
@@ -24,7 +25,7 @@ function Card({ title, headerAction, children, className = "" }) {
 }
 
 function checkNull(field) {
-  return field === null ? "Not Provided" : field;
+  return field === null || field === "" ? "Not Provided" : field;
 }
 
 function checkDirectors(directors) {
@@ -38,6 +39,17 @@ function checkDirectors(directors) {
   }
 }
 
+function getDirtyFields(original, draft) {
+  // Only stores the fields that have been changed
+  const changed = {};
+
+  for (const key in draft) {
+    if (draft[key] !== original[key]) {
+      changed[key] = draft[key];
+    }
+  }
+  return changed;
+}
 const ClientProfile = () => {
   const [clientProfile, setClientProfile] = useState([]);
   const [error, setError] = useState("");
@@ -46,7 +58,6 @@ const ClientProfile = () => {
   const paymentsInitializedForId = useRef(null);
   const [profileEditing, setProfileEditing] = useState(false);
   const [profileDraft, setProfileDraft] = useState({});
-  const [profileOverrides, setProfileOverrides] = useState({});
   const [loading, setLoading] = useState(true);
 
   const { user, isLoading } = useAuth0();
@@ -70,10 +81,29 @@ const ClientProfile = () => {
     getMatters();
   }, [user, isLoading]);
 
-  function saveProfileEdit() {
-    setProfileOverrides({ ...profileDraft });
-    setProfileEditing(false);
-    setProfileDraft({});
+  async function saveProfileEdit() {
+    try {
+      const dirtyFields = {
+        ...getDirtyFields(clientProfile, profileDraft),
+        client_id: clientProfile.client_id,
+        matter_id: clientProfile.matter_id,
+        entity_id: clientProfile.entity_id,
+      };
+
+      await axios.post(
+        "http://localhost:8081/api/matters/update-client-profile/",
+        dirtyFields,
+      );
+
+      setClientProfile((prev) => ({
+        ...prev,
+        ...dirtyFields,
+      }));
+      setProfileEditing(false);
+      setProfileDraft({});
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function cancelProfileEdit() {
@@ -82,7 +112,7 @@ const ClientProfile = () => {
   }
 
   function startProfileEdit() {
-    setProfileDraft(clientProfile);
+    setProfileDraft({ ...clientProfile });
     setProfileEditing(true);
   }
 
@@ -244,7 +274,7 @@ const ClientProfile = () => {
                         <InputRow
                           label="Trust Account Expected"
                           value={
-                            checkNull(clientProfile.matter_trust_expected) === 0
+                            clientProfile.matter_trust_expected === 0
                               ? "No"
                               : "Yes"
                           }
@@ -263,7 +293,12 @@ const ClientProfile = () => {
                         />
                         <InputRow
                           label="Estimated Band Value"
-                          value={checkNull(clientProfile.matter_band_value)}
+                          value={
+                            MATTER_BAND_VALUES.find(
+                              (e) =>
+                                e.value === clientProfile.matter_band_value,
+                            ).label
+                          }
                         />
                       </div>
                     </>
