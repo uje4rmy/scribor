@@ -9,6 +9,7 @@ import ProfileEditing from "./ProfileEditing";
 import SectionLabel from "../../../../components/clientProfiles/SectionLabel";
 import InputRow from "../../../../components/clientProfiles/InputRow";
 import MATTER_BAND_VALUES from "../../../../components/clientProfiles/BandValues";
+import TYPES from "../../../../components/clientProfiles/ClientTypes";
 
 function Card({ title, headerAction, children, className = "" }) {
   return (
@@ -186,7 +187,11 @@ const ClientProfile = () => {
                         />
                         <InputRow
                           label="Client Type"
-                          value={clientProfile.client_type}
+                          value={
+                            TYPES.find(
+                              (e) => e.type === clientProfile.client_type,
+                            ).label
+                          }
                         />
                         <InputRow
                           label="Date of Birth"
@@ -306,7 +311,7 @@ const ClientProfile = () => {
                 </Card>
 
                 <Card title="Oversight" className="min-h-0 flex-1">
-                  {/* <Oversight /> */}
+                  <Oversight clientProfile={clientProfile} />
                 </Card>
               </div>
 

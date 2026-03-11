@@ -3,6 +3,7 @@ import SectionLabel from "../../../../components/clientProfiles/SectionLabel";
 import BooleanDropdown from "../../../../components/clientProfiles/BooleanDropdown";
 import InputRow from "../../../../components/clientProfiles/InputRow";
 import BandDropdown from "../../../../components/clientProfiles/BandDropdown";
+import ClientTypeDropdown from "../../../../components/clientProfiles/ClientTypeDropdown";
 
 function getSectionKey(sectionKey) {
   switch (sectionKey) {
@@ -67,6 +68,12 @@ const ProfileEditing = ({
                     />
                   ) : type === "band" ? (
                     <BandDropdown
+                      profileDraft={profileDraft}
+                      setProfileDraft={setProfileDraft}
+                      fieldKey={key}
+                    />
+                  ) : type === "type" ? (
+                    <ClientTypeDropdown
                       profileDraft={profileDraft}
                       setProfileDraft={setProfileDraft}
                       fieldKey={key}
