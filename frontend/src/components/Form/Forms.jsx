@@ -31,8 +31,9 @@ const Forms = () => {
         },
         ownershipControl: {
             directors: [""],
-            beneficialOwners: [""],
-            politicallyExposedPersons: "",
+            owners: [""],
+            pep: "",
+            ownershipFile: null
         },
         sourceOfFunds: {
             transactionValue: "",
@@ -146,7 +147,7 @@ const Forms = () => {
         <div>
             <h1 className="text-2xl font-semibold">Form</h1>
                 <div className="mt-1 text-xs text-gray-500">
-                    Step {currentPage} of 7
+                    Step {currentPage} of 8
                 </div>
         </div>
 
@@ -155,7 +156,10 @@ const Forms = () => {
         
             {/* Left Progress Card */}
             <div className="w-72">
-                <FormProgress />
+                <FormProgress
+                    currentPage={currentPage}
+                    goToPage={(page) => setCurrentPage(page)}
+                />
             </div>
                 {/* Load Component Based on Current Page */}
                 {renderPage()}

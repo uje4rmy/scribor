@@ -1,39 +1,44 @@
 import styles from "./FormProgress.module.css";
+
 const steps = [
-    {id: 1, label: "Basic Details", status: "uncomplete"},
-    {id: 2, label: "Client Type & Service", status: "uncomplete"},
-    {id: 3, label: "Ownership & Control", status: "uncomplete"},
-    {id: 4, label: "Source of Funds", status: "uncomplete"},
-    {id: 5, label: "Country Exposure", status: "uncomplete"},
-    {id: 6, label: "PEP and Sanctions Declarations", status: "uncomplete"},
-    {id: 7, label: "Nature & Purpose", status: "uncomplete"},
-    {id: 8, label: "Declarations", status: "uncomplete"},
+  { id: 1, label: "Basic Details" },
+  { id: 2, label: "Client Type & Service" },
+  { id: 3, label: "Ownership & Control" },
+  { id: 4, label: "Source of Funds" },
+  { id: 5, label: "Country Exposure" },
+  { id: 6, label: "PEP and Sanctions Declarations" },
+  { id: 7, label: "Nature & Purpose" },
+  { id: 8, label: "Declarations" },
+];
 
-
-]
-
-const FormProgress = () => {
+const FormProgress = ({ currentPage, goToPage }) => {
   return (
     <div className={styles.progressCard}>
       <h4 className={styles.progressTitle}>PROGRESS</h4>
 
       <ul className={styles.progressList}>
-        {steps.map((step) => (
-          <li
-            key={step.id}
-            className={`${styles.progressItem} ${styles[step.status]}`}
-          >
-            <div className={styles.stepIndicator}>
-              {step.status === "complete" ? "✓" : step.id}
-            </div>
+        {steps.map((step) => {
+          let statusClass = "";
 
-            <span className={styles.stepLabel}>{step.label}</span>
+          if (step.id < currentPage) statusClass = styles.complete;
+          else if (step.id === currentPage) statusClass = styles.active;
+          else statusClass = styles.uncomplete;
 
-            {step.status === "complete" && (
-              <span className={styles.stepStatus}>Ready</span>
-            )}
-          </li>
-        ))}
+          return (
+            <li
+              key={step.id}
+              className={`${styles.progressItem} ${statusClass}`}
+              onClick={() => goToPage(step.id)}
+              style={{ cursor: "pointer" }}
+            >
+              <div className={styles.stepIndicator}>
+                {step.id < currentPage ? "✓" : step.id}
+              </div>
+              <span className={styles.stepLabel}>{step.label}</span>
+              {step.id < currentPage && <span className={styles.stepStatus}>Ready</span>}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
