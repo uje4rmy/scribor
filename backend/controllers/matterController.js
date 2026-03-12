@@ -1,9 +1,6 @@
 const pool = require("../db");
-const { ulid } = require("ulid");
-
-function generateId(prefix) {
-  return `${prefix}_${ulid()}`;
-}
+const loadQuery = require("../utils/loadQuery");
+const generateId = require("../utils/generateId");
 
 module.exports = {
   getMatters: async (req, res) => {
@@ -21,8 +18,8 @@ module.exports = {
   getClientProfile: async (req, res) => {
     try {
       const id = req.params.userId;
-      const query =
-        "SELECT * FROM CLIENT c JOIN MATTER m ON c.client_id = m.client_id JOIN ENTITY e ON c.client_id = e.client_id WHERE user_id = (?)";
+      const query = loadQuery("getClientProfile");
+
       const [results] = await pool.query(query, [id]);
 
       res.json(results);
@@ -82,7 +79,7 @@ module.exports = {
       }
 
       await connection.commit();
-      console.log(matterTable);
+
       res.json({ success: true });
     } catch (error) {
       await connection.rollback();
