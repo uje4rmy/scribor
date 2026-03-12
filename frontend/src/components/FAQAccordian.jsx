@@ -12,6 +12,7 @@ const FAQAccordian = ({ items }) => {
         {items.map((items, index) => {
           return (
             <AccordionItem
+              key={index}
               className="w-full rounded-2xl border border-slate-200/70 px-4 bg-white/70 text-left text-[13px] text-slate-700 transition hover:border-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
               value={"item-" + index}
             >

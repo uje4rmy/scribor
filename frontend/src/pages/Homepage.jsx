@@ -148,7 +148,7 @@ const Homepage = () => {
 
           <div className="mt-12 grid grid-cols-1 gap-12 items-stretch md:grid-cols-3">
             {stepLabels.map((card) => (
-              <HomeStepDiagram card={card} />
+              <HomeStepDiagram key={card.title} card={card} />
             ))}
           </div>
         </section>

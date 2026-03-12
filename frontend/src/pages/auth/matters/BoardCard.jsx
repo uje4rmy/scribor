@@ -3,6 +3,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import BoardDropdownMenu from "./BoardDropdownMenu";
+import { capitalise } from "../../../components/utils/HelperFunctions";
 
 const BoardCard = ({ intake, boardColumns, setMatters }) => {
   function levelColors(level) {
@@ -42,10 +43,7 @@ const BoardCard = ({ intake, boardColumns, setMatters }) => {
               </span>
             </div>
             <div className="truncate text-[12px] text-gray-500">
-              {`${intake.matter_type} · ${
-                intake.client_type.charAt(0).toUpperCase() +
-                intake.client_type.slice(1)
-              }`}
+              {`${capitalise(intake.matter_type)} · ${capitalise(intake.client_type)}`}
             </div>
             <div className="mt-1.5 flex min-h-[26px] flex-wrap items-center gap-1.5">
               <span
