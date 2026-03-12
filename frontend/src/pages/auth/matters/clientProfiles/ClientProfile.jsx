@@ -10,20 +10,8 @@ import SectionLabel from "../../../../components/clientProfiles/SectionLabel";
 import InputRow from "../../../../components/clientProfiles/InputRow";
 import MATTER_BAND_VALUES from "../../../../components/clientProfiles/BandValues";
 import TYPES from "../../../../components/clientProfiles/ClientTypes";
-
-function Card({ title, headerAction, children, className = "" }) {
-  return (
-    <div
-      className={`flex flex-col rounded-xl border border-slate-200 bg-white p-4 shadow-sm ${className}`}
-    >
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="text-base font-semibold text-slate-900">{title}</h2>
-        {headerAction}
-      </div>
-      <div className="mt-3 flex flex-1 flex-col gap-2">{children}</div>
-    </div>
-  );
-}
+import { format } from "date-fns";
+import Card from "../../../../components/clientProfiles/Card";
 
 function checkNull(field) {
   return field === null || field === "" ? "Not Provided" : field;
@@ -51,15 +39,29 @@ function getDirtyFields(original, draft) {
   }
   return changed;
 }
+
+const DEFAULT_LOG = {
+  payment_date: "",
+  payment_amount: "",
+  payment_currency: "AUD",
+  payment_paidby: "client",
+  payment_payer_name: "",
+  payment_destination: "trust",
+  payment_method: "eft",
+  payment_status: "complete",
+  payment_ref: "",
+  payment_flag: 0,
+  payment_reason: "",
+};
+
 const ClientProfile = () => {
   const [clientProfile, setClientProfile] = useState([]);
-  const [error, setError] = useState("");
   const [payments, setPayments] = useState([]);
-  const [showLogPayment, setShowLogPayment] = useState(false);
-  const paymentsInitializedForId = useRef(null);
   const [profileEditing, setProfileEditing] = useState(false);
   const [profileDraft, setProfileDraft] = useState({});
   const [loading, setLoading] = useState(true);
+  const [showLogPayment, setShowLogPayment] = useState(false);
+  const [logDraft, setLogDraft] = useState({ ...DEFAULT_LOG });
 
   const { user, isLoading } = useAuth0();
 
@@ -72,7 +74,14 @@ const ClientProfile = () => {
         const res = await axios.get(
           "http://localhost:8081/api/matters/client-profile/" + userId,
         );
+
+        const clientId = res.data[0].client_id;
+        const resPay = await axios.get(
+          "http://localhost:8081/api/payments/" + clientId,
+        );
+
         setClientProfile(res.data[0]);
+        setPayments(resPay.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -115,6 +124,43 @@ const ClientProfile = () => {
   function startProfileEdit() {
     setProfileDraft({ ...clientProfile });
     setProfileEditing(true);
+  }
+
+  async function handleLogPayment(
+    payDate,
+    payTime,
+    setError,
+    setDate,
+    setTime,
+  ) {
+    try {
+      if (!payDate) {
+        // Date validation
+        setError(true);
+        return;
+      }
+
+      const newPaymentDate = `${format(payDate, "yyyy-MM-dd")} ${payTime}`;
+      const payment = {
+        ...logDraft,
+        client_id: clientProfile.client_id,
+        payment_date: newPaymentDate,
+      };
+
+      const res = await axios.post(
+        "http://localhost:8081/api/payments",
+        payment,
+      );
+
+      setPayments((prev) => [...prev, res.data]);
+      setLogDraft({ ...DEFAULT_LOG });
+      setDate(undefined);
+      setTime("12:00:00");
+      setError(false);
+      setShowLogPayment(false);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -190,7 +236,7 @@ const ClientProfile = () => {
                           value={
                             TYPES.find(
                               (e) => e.type === clientProfile.client_type,
-                            ).label
+                            )?.label
                           }
                         />
                         <InputRow
@@ -311,11 +357,21 @@ const ClientProfile = () => {
                 </Card>
 
                 <Card title="Oversight" className="min-h-0 flex-1">
-                  <Oversight clientProfile={clientProfile} />
+                  <Oversight
+                    clientProfile={clientProfile}
+                    payments={payments}
+                  />
                 </Card>
               </div>
 
-              {/* <Payments /> */}
+              <Payments
+                payments={payments}
+                logDraft={logDraft}
+                setLogDraft={setLogDraft}
+                showLogPayment={showLogPayment}
+                setShowLogPayment={setShowLogPayment}
+                handleLogPayment={handleLogPayment}
+              />
             </>
           )}
         </div>
