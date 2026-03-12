@@ -1,6 +1,32 @@
 import styles from "./Forms.module.css";
 
 const NaturePurpose = ({ data, update }) => {
+
+  const fields = [
+    {
+      type: "textarea",
+      label: "Describe purpose of legal service",
+      key: "purpose",
+      placeholder: "Describe the purpose",
+      rows: 4
+    },
+    {
+      type: "input",
+      label: "Expected duration of relationship",
+      key: "duration",
+      placeholder: "e.g., 6 months, 1 year"
+    },
+    {
+      type: "select",
+      label: "Is this a one-off transaction?",
+      key: "oneOff",
+      options: [
+        { value: "yes", text: "Yes" },
+        { value: "no", text: "No" }
+      ]
+    }
+  ];
+
   return (
     <div className="flex-1">
       <div className={styles.formCard}>
@@ -12,52 +38,56 @@ const NaturePurpose = ({ data, update }) => {
 
         <form className="flex flex-col gap-4">
 
-          {/* Purpose */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Describe purpose of legal service
-            </label>
+          {fields.map((field) => (
+            <div key={field.key}>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                {field.label}
+              </label>
 
-            <textarea
-              value={data.purpose}
-              onChange={(e) => update({ purpose: e.target.value })}
-              rows={4}
-              placeholder="Describe the purpose"
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-200"
-            />
-          </div>
+              {field.type === "textarea" && (
+                <textarea
+                  rows={field.rows}
+                  value={data[field.key]}
+                  placeholder={field.placeholder}
+                  onChange={(e) =>
+                    update({ [field.key]: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-200"
+                />
+              )}
 
-          {/* Expected duration */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Expected duration of relationship
-            </label>
+              {field.type === "input" && (
+                <input
+                  type="text"
+                  value={data[field.key]}
+                  placeholder={field.placeholder}
+                  onChange={(e) =>
+                    update({ [field.key]: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-200"
+                />
+              )}
 
-            <input
-              type="text"
-              value={data.duration}
-              onChange={(e) => update({ duration: e.target.value })}
-              placeholder="e.g., 6 months, 1 year"
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-200"
-            />
-          </div>
+              {field.type === "select" && (
+                <select
+                  value={data[field.key]}
+                  onChange={(e) =>
+                    update({ [field.key]: e.target.value })
+                  }
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                >
+                  <option value="" disabled hidden>Select</option>
 
-          {/* One-off transaction */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Is this a one-off transaction?
-            </label>
+                  {field.options.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.text}
+                    </option>
+                  ))}
+                </select>
+              )}
 
-            <select
-              value={data.oneOff}
-              onChange={(e) => update({ oneOff: e.target.value })}
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-            >
-              <option value="" disabled hidden>Select</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
-          </div>
+            </div>
+          ))}
 
         </form>
       </div>

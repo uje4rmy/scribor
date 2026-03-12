@@ -1,6 +1,45 @@
 import styles from "./Forms.module.css";
 
 const SourceOfFunds = ({ data, update }) => {
+
+  const selectFields = [
+    {
+      label: "Estimated Transaction Value",
+      key: "transactionValue",
+      options: [
+        { value: "under_10k", text: "Under $10,000" },
+        { value: "10k_49k", text: "$10,000-$49,000" },
+        { value: "50k_99k", text: "$50,000-$99,000" },
+        { value: "100k_499k", text: "$100,000-$499,999" },
+        { value: "500k_999k", text: "$500,000-$999,999" },
+        { value: "1m_4m", text: "$1M-$4.9M" },
+        { value: "5m_plus", text: "$5M+" }
+      ]
+    },
+    {
+      label: "Transfer Method",
+      key: "transferMethod",
+      options: [
+        { value: "bank_transfer", text: "Bank transfer" },
+        { value: "cash", text: "Cash (physical currency)" },
+        { value: "crypto", text: "Cryptocurrency" },
+        { value: "trust_account", text: "Lawyer’s trust account" },
+        { value: "bank_cheque", text: "Bank cheque / certified cheque" },
+        { value: "third_party", text: "Third-party funding or lender" },
+        { value: "unknown", text: "Not yet determined" }
+      ]
+    },
+    {
+      label: "Delivery Channel",
+      key: "deliveryChannel",
+      options: [
+        { value: "face_to_face", text: "Face-to-face" },
+        { value: "remote", text: "Remote / non-face-to-face" },
+        { value: "intermediary", text: "Through an intermediary or third-party representative" }
+      ]
+    }
+  ];
+
   return (
     <div className="flex-1">
       <div className={styles.formCard}>
@@ -12,75 +51,27 @@ const SourceOfFunds = ({ data, update }) => {
 
         <form className="flex flex-col gap-4">
 
-          {/* Estimated Transaction Value */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Estimated Transaction Value
-            </label>
+          {selectFields.map((field) => (
+            <div key={field.key}>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                {field.label}
+              </label>
 
-            <select
-              value={data.transactionValue}
-              onChange={(e) =>
-                update({ transactionValue: e.target.value })
-              }
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-            >
-              <option value="" disabled hidden>Select</option>
-              <option value="under_10k">Under $10,000</option>
-              <option value="10k_49k">$10,000-$49,000</option>
-              <option value="50k_99k">$50,000-$99,000</option>
-              <option value="100k_499k">$100,000-$499,999</option>
-              <option value="500k_999k">$500,000-$999,999</option>
-              <option value="1m_4m">$1M-$4.9M</option>
-              <option value="5m_plus">$5M+</option>
-            </select>
-          </div>
+              <select
+                value={data[field.key]}
+                onChange={(e) => update({ [field.key]: e.target.value })}
+                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+              >
+                <option value="" disabled hidden>Select</option>
 
-          {/* Transfer Method */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Transfer Method
-            </label>
-
-            <select
-              value={data.transferMethod}
-              onChange={(e) =>
-                update({ transferMethod: e.target.value })
-              }
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-            >
-              <option value="" disabled hidden>Select</option>
-              <option value="bank_transfer">Bank transfer</option>
-              <option value="cash">Cash (physical currency)</option>
-              <option value="crypto">Cryptocurrency</option>
-              <option value="trust_account">Lawyer’s trust account</option>
-              <option value="bank_cheque">Bank cheque / certified cheque</option>
-              <option value="third_party">Third-party funding or lender</option>
-              <option value="unknown">Not yet determined</option>
-            </select>
-          </div>
-
-          {/* Delivery Channel */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Delivery Channel
-            </label>
-
-            <select
-              value={data.deliveryChannel}
-              onChange={(e) =>
-                update({ deliveryChannel: e.target.value })
-              }
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
-            >
-              <option value="" disabled hidden>Select</option>
-              <option value="face_to_face">Face-to-face</option>
-              <option value="remote">Remote / non-face-to-face</option>
-              <option value="intermediary">
-                Through an intermediary or third-party representative
-              </option>
-            </select>
-          </div>
+                {field.options.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.text}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
 
           {/* Source of Funds Description */}
           <div>

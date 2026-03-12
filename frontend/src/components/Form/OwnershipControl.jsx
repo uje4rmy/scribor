@@ -2,24 +2,28 @@ import styles from "./Forms.module.css";
 
 const OwnershipControl = ({ data, update }) => {
 
-  const addDirector = () => {
-    update({ directors: [...data.directors, ""] });
+  const sections = [
+    {
+      label: "List Directors",
+      key: "directors",
+      button: "+ Add Director"
+    },
+    {
+      label: "Beneficial Owners / Settlor / Trustee / Beneficiaries",
+      key: "owners",
+      button: "+ Add another",
+      placeholder: "Owner name"
+    }
+  ];
+
+  const addField = (key) => {
+    update({ [key]: [...data[key], ""] });
   };
 
-  const addOwner = () => {
-    update({ owners: [...data.owners, ""] });
-  };
-
-  const updateDirector = (index, value) => {
-    const updated = [...data.directors];
+  const updateField = (key, index, value) => {
+    const updated = [...data[key]];
     updated[index] = value;
-    update({ directors: updated });
-  };
-
-  const updateOwner = (index, value) => {
-    const updated = [...data.owners];
-    updated[index] = value;
-    update({ owners: updated });
+    update({ [key]: updated });
   };
 
   return (
@@ -35,56 +39,34 @@ const OwnershipControl = ({ data, update }) => {
 
         <form className="flex flex-col gap-4">
 
-          {/* DIRECTORS */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              List Directors
-            </label>
+          {sections.map((section) => (
+            <div key={section.key}>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                {section.label}
+              </label>
 
-            {data.directors.map((director, index) => (
-              <input
-                key={index}
-                type="text"
-                value={director}
-                onChange={(e) => updateDirector(index, e.target.value)}
-                className="w-full mb-2 rounded-lg border border-slate-200 px-3 py-2 text-sm"
-              />
-            ))}
+              {data[section.key].map((value, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  value={value}
+                  placeholder={section.placeholder}
+                  onChange={(e) =>
+                    updateField(section.key, index, e.target.value)
+                  }
+                  className="w-full mb-2 rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                />
+              ))}
 
-            <button
-              type="button"
-              onClick={addDirector}
-              className="mt-2 rounded-md bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-200"
-            >
-              + Add Director
-            </button>
-          </div>
-
-          {/* OWNERS */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-2">
-              Beneficial Owners / Settlor / Trustee / Beneficiaries
-            </label>
-
-            {data.owners.map((owner, index) => (
-              <input
-                key={index}
-                type="text"
-                value={owner}
-                onChange={(e) => updateOwner(index, e.target.value)}
-                placeholder="Owner name"
-                className="w-full mb-2 rounded-lg border border-slate-200 px-3 py-2 text-sm"
-              />
-            ))}
-
-            <button
-              type="button"
-              onClick={addOwner}
-              className="mt-2 rounded-md bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-200"
-            >
-              + Add another
-            </button>
-          </div>
+              <button
+                type="button"
+                onClick={() => addField(section.key)}
+                className="mt-2 rounded-md bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-200"
+              >
+                {section.button}
+              </button>
+            </div>
+          ))}
 
           {/* FILE UPLOAD */}
           <div>
@@ -94,9 +76,7 @@ const OwnershipControl = ({ data, update }) => {
 
             <input
               type="file"
-              onChange={(e) =>
-                update({ ownershipFile: e.target.files[0] })
-              }
+              onChange={(e) => update({ ownershipFile: e.target.files[0] })}
               className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
             />
           </div>

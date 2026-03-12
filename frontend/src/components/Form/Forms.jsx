@@ -10,6 +10,7 @@ import PEPSanctions from "./PepSanctions";
 import NaturePurpose from "./NaturePurpose";
 import Declarations from "./Declarations";
 import { useState } from "react";
+import { data } from "react-router";
 
 const Forms = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -63,6 +64,43 @@ const Forms = () => {
             idConsent: "",
         },
     });
+
+    const validatePage = () => {
+
+        switch (currentPage) {
+
+            case 1:{
+                data = formData.clientInformation;
+                if (!data.fullname || !data.dob || !data.abn || !data.registeredAddress || !data.residentialAddress || !data.taxResidency || !data.contactDetails) {
+                    return false;
+                }
+                
+                return true;
+            }
+            case 2:{
+                data = formData.clientType;
+                if (!data.type || !data.service) {
+                    return false;
+                }
+                return true;
+            }
+
+            case 3: data = formData.ownershipControl;
+
+            case 4: data = formData.sourceOfFunds;
+
+            case 5: data = formData.countryExposure;
+            
+            case 6: data = formData.pepSanctions;
+
+            case 7: data = formData.naturePurpose;
+
+            case 8: data = formData.declarations;
+
+
+        }
+
+    }
 
     // Function to update a section
     const updateSection = (section, data) => {
