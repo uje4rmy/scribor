@@ -13,11 +13,10 @@ const ClientTypeDropdown = ({ profileDraft, setProfileDraft, fieldKey }) => {
     <Select
       value={TYPES.find((e) => e.type === profileDraft[fieldKey]).type}
       onValueChange={(value) => {
-        console.log(value);
         setProfileDraft((prev) => ({ ...prev, [fieldKey]: value }));
       }}
     >
-      <SelectTrigger className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm">
+      <SelectTrigger className="mt-0.5 w-full rounded-md border shadow-none border-slate-200 px-2.5 py-1.5 text-sm">
         <SelectValue
           placeholder={
             TYPES.find((e) => e.type === profileDraft[fieldKey]).label

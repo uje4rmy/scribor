@@ -20,7 +20,7 @@ export function DatePicker({ profileDraft, setProfileDraft }) {
           <Button
             variant="outline"
             id="date"
-            className="mt-0.5 w-full font-normal rounded-md border border-slate-200 px-2.5 py-1.5 text-sm data-[empty=true]:text-muted-foreground"
+            className="mt-0.5 w-full font-normal rounded-md border shadow-none border-slate-200 px-2.5 py-1.5 text-sm data-[empty=true]:text-muted-foreground"
           >
             {format(profileDob, "PPP") ?? "Select date"}
           </Button>
