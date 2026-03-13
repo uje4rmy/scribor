@@ -1,7 +1,7 @@
 import Sidebar from "../../../../components/Sidebar";
 import AppTopBar from "../../../../components/AppTopBar";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Oversight from "./Oversight";
 import Payments from "./Payments";

@@ -4,6 +4,7 @@ import BooleanDropdown from "../../../../components/clientProfiles/BooleanDropdo
 import InputRow from "../../../../components/clientProfiles/InputRow";
 import BandDropdown from "../../../../components/clientProfiles/BandDropdown";
 import ClientTypeDropdown from "../../../../components/clientProfiles/ClientTypeDropdown";
+import { DatePicker } from "../../../../components/clientProfiles/DatePicker";
 
 function getSectionKey(sectionKey) {
   switch (sectionKey) {
@@ -78,9 +79,14 @@ const ProfileEditing = ({
                       setProfileDraft={setProfileDraft}
                       fieldKey={key}
                     />
+                  ) : type === "date" ? (
+                    <DatePicker
+                      profileDraft={profileDraft}
+                      setProfileDraft={setProfileDraft}
+                    />
                   ) : (
                     <input
-                      type={key === "client_dob" ? "date" : "text"}
+                      type="text"
                       value={profileDraft[key] ?? ""}
                       onChange={(e) =>
                         setProfileDraft((d) => ({
