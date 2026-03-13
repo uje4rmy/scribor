@@ -4,6 +4,26 @@ import DateRangeFilter from "../../../../components/clientProfiles/filters/DateR
 import StatusFilter from "../../../../components/clientProfiles/filters/StatusFilter";
 import OrderFilter from "../../../../components/clientProfiles/filters/OrderFilter";
 import PaymentTable from "../../../../components/clientProfiles/PaymentTable";
+import LogDropdown from "../../../../components/clientProfiles/LogDropdown";
+
+const currencies = [{ value: "AUD" }, { value: "USD" }, { value: "GBP" }];
+const paidBy = [
+  { value: "client", label: "Client" },
+  { value: "thirdparty", label: "Third Party" },
+];
+const accounts = [
+  { value: "trust", label: "Trust Account" },
+  { value: "office", label: "Office Account" },
+];
+const methods = [
+  { value: "eft", label: "EFT" },
+  { value: "card", label: "Card" },
+  { value: "cash", label: "Cash" },
+];
+const status = [
+  { value: "complete", label: "Complete" },
+  { value: "pending", label: "Pending" },
+];
 
 const Payments = ({
   payments,
@@ -132,38 +152,23 @@ const Payments = ({
               </div>
               <div>
                 <label className="block text-xs text-slate-500">Currency</label>
-                <select
+                <LogDropdown
                   value={logDraft.payment_currency}
-                  onChange={(e) =>
-                    setLogDraft((f) => ({
-                      ...f,
-                      payment_currency: e.target.value,
-                    }))
-                  }
-                  required
-                  className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
-                >
-                  <option value="AUD">AUD</option>
-                  <option value="USD">USD</option>
-                  <option value="GBP">GBP</option>
-                </select>
+                  valKey={"payment_currency"}
+                  options={currencies}
+                  setLogDraft={setLogDraft}
+                  placeholder={"AUD"}
+                />
               </div>
               <div>
                 <label className="block text-xs text-slate-500">Paid By</label>
-                <select
+                <LogDropdown
                   value={logDraft.payment_paidby}
-                  onChange={(e) =>
-                    setLogDraft((f) => ({
-                      ...f,
-                      payment_paidby: e.target.value,
-                    }))
-                  }
-                  required
-                  className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
-                >
-                  <option value="client">Client</option>
-                  <option value="thirdparty">Third party</option>
-                </select>
+                  valKey={"payment_paidby"}
+                  options={paidBy}
+                  setLogDraft={setLogDraft}
+                  placeholder={"Client"}
+                />
               </div>
               {logDraft.payment_paidby === "thirdparty" && (
                 <div>
@@ -189,57 +194,35 @@ const Payments = ({
                 <label className="block text-xs text-slate-500">
                   Destination
                 </label>
-                <select
+                <LogDropdown
                   value={logDraft.payment_destination}
-                  onChange={(e) =>
-                    setLogDraft((f) => ({
-                      ...f,
-                      payment_destination: e.target.value,
-                    }))
-                  }
-                  required
-                  className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
-                >
-                  <option value="trust">Trust Account</option>
-                  <option value="office">Office Account</option>
-                </select>
+                  valKey={"payment_destination"}
+                  options={accounts}
+                  setLogDraft={setLogDraft}
+                  placeholder={"Trust"}
+                />
               </div>
               <div>
                 <label className="block text-xs text-slate-500">
                   Payment Method
                 </label>
-                <select
+                <LogDropdown
                   value={logDraft.payment_method}
-                  onChange={(e) =>
-                    setLogDraft((f) => ({
-                      ...f,
-                      payment_method: e.target.value,
-                    }))
-                  }
-                  required
-                  className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
-                >
-                  <option value="eft">EFT</option>
-                  <option value="card">Card</option>
-                  <option value="cash">Cash</option>
-                </select>
+                  valKey={"payment_method"}
+                  options={methods}
+                  setLogDraft={setLogDraft}
+                  placeholder={"EFT"}
+                />
               </div>
               <div>
                 <label className="block text-xs text-slate-500">Status</label>
-                <select
-                  value={logDraft.payment_status}
-                  onChange={(e) =>
-                    setLogDraft((f) => ({
-                      ...f,
-                      payment_status: e.target.value,
-                    }))
-                  }
-                  required
-                  className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
-                >
-                  <option value="complete">Complete</option>
-                  <option value="pending">Pending</option>
-                </select>
+                <LogDropdown
+                  value={logDraft.status}
+                  valKey={"payment_status"}
+                  options={status}
+                  setLogDraft={setLogDraft}
+                  placeholder={"Complete"}
+                />
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-xs text-slate-500">
