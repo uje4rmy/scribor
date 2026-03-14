@@ -1,7 +1,7 @@
 import Sidebar from "../../../components/Sidebar";
 import AppTopBar from "../../../components/AppTopBar";
 import MattersBoard from "./MattersBoard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
@@ -31,6 +31,23 @@ const Matters = () => {
     getMatters();
   }, [user, isLoading]);
 
+  const filteredMatters = useMemo(() => {
+    // Search
+    if (search.trim() === "") return matters;
+
+    const q = search.trim().toLowerCase();
+
+    return matters.filter((m) => {
+      return (
+        m.client_fullname?.toLowerCase().includes(q) ||
+        m.client_level?.toLowerCase().includes(q) ||
+        m.matter_type?.toLowerCase().includes(q) ||
+        m.client_type?.toLowerCase().includes(q) ||
+        (m.client_flagged === 1 && "flagged".includes(q))
+      );
+    });
+  }, [search, matters]);
+
   return (
     <div className="grid grid-cols-[224px_1fr] min-h-screen">
       <div className="sidebar">
@@ -54,7 +71,9 @@ const Matters = () => {
                 className="h-9 min-w-[200px] flex-1 rounded-md border border-gray-200 bg-white px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300"
               />
             </div>
-            <div className="mt-2 text-xs text-gray-500">Showing ... of ...</div>
+            <div className="mt-2 text-xs text-gray-500">
+              Showing {filteredMatters.length} of {matters.length}
+            </div>
           </div>
 
           {loading ? (
@@ -64,7 +83,7 @@ const Matters = () => {
               <div className="h-8 rounded bg-gray-200" />
               <div className="h-8 rounded bg-gray-200" />
             </div>
-          ) : matters.length === 0 ? (
+          ) : matters.length === 0 || filteredMatters.length === 0 ? (
             <div className="mt-4 rounded-2xl border border-gray-200 bg-white p-10 text-center shadow-sm">
               <div className="text-[15px] font-medium text-gray-900">
                 No matters found.
@@ -75,7 +94,7 @@ const Matters = () => {
             </div>
           ) : (
             <>
-              <MattersBoard matters={matters} setMatters={setMatters} />
+              <MattersBoard matters={filteredMatters} setMatters={setMatters} />
             </>
           )}
         </div>

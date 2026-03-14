@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter } from "react-router";
+import { RouterProvider } from "react-router/dom";
 import "./index.css";
 import App from "./App.jsx";
 import { Auth0Provider } from "@auth0/auth0-react";
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
     element: <Billing />,
   },
   { path: "/matters", element: <Matters /> },
-  { path: "/client-profile/:id", element: <ClientProfile /> },
+  { path: "/client-profile/:clientId", element: <ClientProfile /> },
   {
     path: "/intake",
     element: <Intake />,

@@ -4,7 +4,7 @@ const matterController = require("../controllers/matterController");
 
 router.get("/matters/:userId", matterController.getMatters);
 router.get(
-  "/matters/client-profile/:userId",
+  "/matters/client-profile/:clientId",
   matterController.getClientProfile,
 );
 

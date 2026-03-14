@@ -17,10 +17,10 @@ module.exports = {
   },
   getClientProfile: async (req, res) => {
     try {
-      const id = req.params.userId;
+      const clientId = req.params.clientId;
       const query = loadQuery("getClientProfile");
 
-      const [results] = await pool.query(query, [id]);
+      const [results] = await pool.query(query, [clientId]);
 
       res.json(results);
     } catch (error) {

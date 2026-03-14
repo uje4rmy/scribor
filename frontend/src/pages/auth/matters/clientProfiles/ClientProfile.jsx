@@ -12,6 +12,7 @@ import MATTER_BAND_VALUES from "../../../../components/clientProfiles/BandValues
 import TYPES from "../../../../components/clientProfiles/ClientTypes";
 import { format } from "date-fns";
 import Card from "../../../../components/clientProfiles/Card";
+import { useParams } from "react-router";
 
 function checkNull(field) {
   return field === null || field === "" ? "Not Provided" : field;
@@ -64,18 +65,17 @@ const ClientProfile = () => {
   const [logDraft, setLogDraft] = useState({ ...DEFAULT_LOG });
 
   const { user, isLoading } = useAuth0();
+  const { clientId } = useParams();
 
   useEffect(() => {
     if (isLoading || !user) return;
 
     const getMatters = async () => {
       try {
-        const userId = user.sub.split("|")[1];
         const res = await axios.get(
-          "http://localhost:8081/api/matters/client-profile/" + userId,
+          "http://localhost:8081/api/matters/client-profile/" + clientId,
         );
 
-        const clientId = res.data[0].client_id;
         const resPay = await axios.get(
           "http://localhost:8081/api/payments/" + clientId,
         );

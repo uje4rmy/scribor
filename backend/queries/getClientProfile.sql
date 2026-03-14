@@ -35,6 +35,6 @@ FROM
     JOIN ENTITY e ON c.client_id = e.client_id
     LEFT JOIN PAYMENT p ON c.client_id = p.client_id
 WHERE
-    user_id = (?)
+    c.client_id = (?)
 GROUP BY
     c.client_id
