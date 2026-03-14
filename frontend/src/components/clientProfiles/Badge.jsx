@@ -1,5 +1,5 @@
 const Badge = ({ label, status }) => {
-  const levelColors = (level) => {
+  const levelColors = (level = "") => {
     const s = level.toLowerCase();
     switch (s) {
       case "low":

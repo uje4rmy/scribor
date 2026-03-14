@@ -348,7 +348,7 @@ const ClientProfile = () => {
                             MATTER_BAND_VALUES.find(
                               (e) =>
                                 e.value === clientProfile.matter_band_value,
-                            ).label
+                            )?.label ?? ""
                           }
                         />
                       </div>
