@@ -14,6 +14,15 @@ app.get("/", (req, res) => {
   return res.json("from backend");
 });
 
+// Auth error handler
+app.use((err, req, res, next) => {
+  if (err.name === "UnauthorizedError") {
+    return res.status(401).json({
+      message: "Invalid or missing token",
+    });
+  }
+});
+
 app.use("/api", matterRoutes);
 app.use("/api", paymentRoutes);
 

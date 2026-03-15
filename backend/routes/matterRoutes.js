@@ -1,16 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const matterController = require("../controllers/matterController");
+const jwtCheck = require("../middleware/auth");
 
-router.get("/matters/:userId", matterController.getMatters);
+router.get("/matters/", jwtCheck, matterController.getMatters);
 router.get(
   "/matters/client-profile/:clientId",
+  jwtCheck,
   matterController.getClientProfile,
 );
 
-router.post("/matters/update-status", matterController.postUpdateStatus);
-router.post(
+router.put(
+  "/matters/update-status",
+  jwtCheck,
+  matterController.postUpdateStatus,
+);
+router.put(
   "/matters/update-client-profile",
+  jwtCheck,
   matterController.postUpdateClientProfile,
 );
 

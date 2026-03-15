@@ -1,6 +1,5 @@
 const pool = require("../db");
-const loadQuery = require("../utils/loadQuery");
-const generateId = require("../utils/generateId");
+const { generateId, errorRes } = require("../utils/utils");
 
 module.exports = {
   getPayments: async (req, res) => {
@@ -11,9 +10,10 @@ module.exports = {
 
       const [results] = await pool.query(query, [client_id]);
 
-      res.json(results);
+      res.status(200).json(results);
     } catch (error) {
       console.error("GET Query Error: ", error);
+      return errorRes(res, 500, "Failed to get payments.");
     }
   },
   postPayment: async (req, res) => {
@@ -27,9 +27,10 @@ module.exports = {
 
       await connection.query("INSERT INTO PAYMENT SET ?", [data]);
 
-      res.json({ ...data });
+      res.status(200).json({ ...data });
     } catch (error) {
       console.error("POST Query Error: ", error);
+      return errorRes(res, 500, "Failed to insert payments.");
     }
   },
 };
