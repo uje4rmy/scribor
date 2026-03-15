@@ -3,33 +3,41 @@ import AppTopBar from "../../../components/AppTopBar";
 import MattersBoard from "./MattersBoard";
 import { useState, useEffect, useMemo } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
+import { createApi } from "../../../components/utils/Api";
 
 const Matters = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [matters, setMatters] = useState([]);
 
-  const { user, isLoading } = useAuth0();
+  const { user, isLoading, getAccessTokenSilently, loginWithRedirect } =
+    useAuth0();
 
   useEffect(() => {
     if (isLoading || !user) return;
 
     const getMatters = async () => {
       try {
-        const userId = user.sub.split("|")[1];
-        const res = await axios.get(
-          "http://localhost:8081/api/matters/" + userId,
-        );
+        const api = createApi(getAccessTokenSilently);
+        const res = await api.get("/matters");
         setMatters(res.data);
       } catch (error) {
+        // TEMPORARY
+        if (error.error === "consent_required") {
+          await loginWithRedirect({
+            authorizationParams: {
+              audience: import.meta.env.VITE_AUTH0_API_IDENTIFIER,
+              scope: "read:matters",
+            },
+          });
+        }
         console.log(error);
       } finally {
         setLoading(false);
       }
     };
     getMatters();
-  }, [user, isLoading]);
+  }, [user, isLoading, getAccessTokenSilently, loginWithRedirect]);
 
   const filteredMatters = useMemo(() => {
     // Search

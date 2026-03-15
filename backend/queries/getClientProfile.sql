@@ -36,5 +36,6 @@ FROM
     LEFT JOIN PAYMENT p ON c.client_id = p.client_id
 WHERE
     c.client_id = (?)
+    AND user_id = (?)
 GROUP BY
     c.client_id

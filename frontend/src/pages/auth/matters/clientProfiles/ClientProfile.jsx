@@ -1,7 +1,7 @@
 import Sidebar from "../../../../components/Sidebar";
 import AppTopBar from "../../../../components/AppTopBar";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import Oversight from "./Oversight";
 import Payments from "./Payments";
@@ -13,6 +13,7 @@ import TYPES from "../../../../components/clientProfiles/ClientTypes";
 import { format } from "date-fns";
 import Card from "../../../../components/clientProfiles/Card";
 import { useParams } from "react-router";
+import { createApi } from "../../../../components/utils/Api";
 
 function checkNull(field) {
   return field === null || field === "" ? "Not Provided" : field;
@@ -63,8 +64,13 @@ const ClientProfile = () => {
   const [loading, setLoading] = useState(true);
   const [showLogPayment, setShowLogPayment] = useState(false);
   const [logDraft, setLogDraft] = useState({ ...DEFAULT_LOG });
+  const [error, setError] = useState(null);
 
-  const { user, isLoading } = useAuth0();
+  const { user, isLoading, getAccessTokenSilently } = useAuth0();
+  const api = useMemo(
+    () => createApi(getAccessTokenSilently),
+    [getAccessTokenSilently],
+  );
   const { clientId } = useParams();
 
   useEffect(() => {
@@ -72,24 +78,21 @@ const ClientProfile = () => {
 
     const getMatters = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:8081/api/matters/client-profile/" + clientId,
-        );
+        const resProfile = await api.get("/matters/client-profile/" + clientId);
+        const resPayments = await api.get("/payments/" + clientId);
 
-        const resPay = await axios.get(
-          "http://localhost:8081/api/payments/" + clientId,
-        );
-
-        setClientProfile(res.data[0]);
-        setPayments(resPay.data);
+        setClientProfile(resProfile.data[0]);
+        setPayments(resPayments.data);
       } catch (error) {
-        console.log(error);
+        setError(error);
       } finally {
         setLoading(false);
       }
     };
     getMatters();
-  }, [user, isLoading]);
+  }, [user, isLoading, clientId]);
+
+  if (error) throw error;
 
   async function saveProfileEdit() {
     try {
@@ -100,7 +103,7 @@ const ClientProfile = () => {
         entity_id: clientProfile.entity_id,
       };
 
-      await axios.post(
+      await axios.put(
         "http://localhost:8081/api/matters/update-client-profile/",
         dirtyFields,
       );
