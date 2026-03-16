@@ -158,19 +158,38 @@ const Forms = () => {
 
   const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
-  const handleSubmit = () => {
+const handleSubmit = () => {
+  const { confirmInfo, amlConsent, idConsent } = formData.declarations;
+
+  // Ensure all declarations are YES
+  if (confirmInfo !== "yes" || amlConsent !== "yes" || idConsent !== "yes") {
+    setErrors({
+      confirmInfo:
+        confirmInfo !== "yes"
+          ? "You must confirm the information is true"
+          : "",
+      amlConsent:
+        amlConsent !== "yes"
+          ? "You must consent to AML screening"
+          : "",
+      idConsent:
+        idConsent !== "yes"
+          ? "You must consent to identity verification"
+          : "",
+    });
+
+        alert("All declarations must be accepted before submitting.");
+        return;
+    }
+
     const confirmSubmit = window.confirm(
-      "Are you ready to submit the form? Please confirm all information is correct."
+        "Are you ready to submit the form? Please confirm all information is correct."
     );
 
     if (!confirmSubmit) return;
 
-    const submissionData = {
-      ...formData,
+    console.log("Form Submitted:", formData);
     };
-
-    console.log("Form Submitted:", submissionData);
-  };
 
   return (
     <>

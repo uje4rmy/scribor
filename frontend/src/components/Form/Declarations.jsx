@@ -51,9 +51,9 @@ const Declarations = ({ data, update, errors }) => {
               </select>
 
               {errors?.[field.key] && (
-                <p className="text-red-500 text-xs mt-1">
-                  This field is required
-                </p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors?.[field.key]}
+              </p>
               )}
 
             </div>
