@@ -1,6 +1,6 @@
 import styles from "./Forms.module.css";
 
-const Declarations = ({ data, update }) => {
+const Declarations = ({ data, update, errors }) => {
 
   const selectFields = [
     {
@@ -35,14 +35,27 @@ const Declarations = ({ data, update }) => {
               </label>
 
               <select
-                value={data[field.key]}
+                value={data[field.key] || ""}
                 onChange={(e) => update({ [field.key]: e.target.value })}
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-1
+                  ${
+                    errors?.[field.key]
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                      : "border-slate-200 focus:border-slate-400 focus:ring-slate-200"
+                  }
+                `}
               >
                 <option value="" disabled hidden>Select</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
               </select>
+
+              {errors?.[field.key] && (
+                <p className="text-red-500 text-xs mt-1">
+                  This field is required
+                </p>
+              )}
+
             </div>
           ))}
 

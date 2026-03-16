@@ -11,7 +11,7 @@ const steps = [
   { id: 8, label: "Declarations" },
 ];
 
-const FormProgress = ({ currentPage, goToPage }) => {
+const FormProgress = ({ currentPage, goToPage, isStepValid }) => {
   return (
     <div className={styles.progressCard}>
       <h4 className={styles.progressTitle}>PROGRESS</h4>
@@ -28,14 +28,24 @@ const FormProgress = ({ currentPage, goToPage }) => {
             <li
               key={step.id}
               className={`${styles.progressItem} ${statusClass}`}
-              onClick={() => goToPage(step.id)}
-              style={{ cursor: "pointer" }}
+              onClick={() => {
+                if (step.id <= currentPage || isStepValid(currentPage)) {
+                  goToPage(step.id);
+                }
+              }}
+              style={{
+                cursor: step.id <= currentPage ? "pointer" : "not-allowed"
+              }}
             >
               <div className={styles.stepIndicator}>
                 {step.id < currentPage ? "✓" : step.id}
               </div>
+
               <span className={styles.stepLabel}>{step.label}</span>
-              {step.id < currentPage && <span className={styles.stepStatus}>Ready</span>}
+
+              {step.id < currentPage && (
+                <span className={styles.stepStatus}>Ready</span>
+              )}
             </li>
           );
         })}

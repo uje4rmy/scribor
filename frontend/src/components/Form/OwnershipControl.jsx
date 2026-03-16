@@ -1,6 +1,6 @@
 import styles from "./Forms.module.css";
 
-const OwnershipControl = ({ data, update }) => {
+const OwnershipControl = ({ data, update, errors }) => {
 
   const sections = [
     {
@@ -69,6 +69,7 @@ const OwnershipControl = ({ data, update }) => {
           ))}
 
           {/* FILE UPLOAD */}
+
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">
               Ownership structure upload (if available)
@@ -82,20 +83,36 @@ const OwnershipControl = ({ data, update }) => {
           </div>
 
           {/* PEP QUESTION */}
+
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-2">
               Are any owners politically exposed persons?
             </label>
 
             <select
-              value={data.pep}
+              value={data.pep || ""}
               onChange={(e) => update({ pep: e.target.value })}
-              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+              className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-1
+                ${
+                  errors?.pep
+                    ? "border-red-500 focus:border-red-500 focus:ring-red-200"
+                    : "border-slate-200 focus:border-slate-400 focus:ring-slate-200"
+                }
+              `}
             >
-              <option value="" disabled hidden>Select</option>
+              <option value="" disabled>
+                Select
+              </option>
               <option value="yes">Yes</option>
               <option value="no">No</option>
             </select>
+
+            {errors?.pep && (
+              <p className="text-red-500 text-xs mt-1">
+                Please select an option
+              </p>
+            )}
+
           </div>
 
         </form>

@@ -1,6 +1,5 @@
 import FormTopBar from "../FormTopBar";
 import FormProgress from "../FormProgress/FormProgress";
-import styles from "./Forms.module.css";
 import ClientInformation from "./ClientInformation";
 import ClientType from "./ClientType";
 import OwnershipControl from "./OwnershipControl";
@@ -10,227 +9,229 @@ import PEPSanctions from "./PepSanctions";
 import NaturePurpose from "./NaturePurpose";
 import Declarations from "./Declarations";
 import { useState } from "react";
-import { data } from "react-router";
 
 const Forms = () => {
-    const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [errors, setErrors] = useState({});
 
-    // Store Form data in state
-    const [formData, setFormData] = useState({
-        clientInformation: {
-            fullName: "",
-            dob: "",
-            abn: "",
-            registeredAddress: "",
-            residentialAddress: "",
-            taxResidency: "",
-            contactDetails: "",
-        },
-        clientType: {
-            type: "",
-            service: "",
-        },
-        ownershipControl: {
-            directors: [""],
-            owners: [""],
-            pep: "",
-            ownershipFile: null
-        },
-        sourceOfFunds: {
-            transactionValue: "",
-            transferMethod: "",
-            deliveryChannel: "",
-            fundDescription: "",
-        },
-        countryExposure: {
-            clientCountry: "",
-            ownerCountry: "",
-            connectedCountries: "",
-            fundsOriginCountry: "",
-        },
-        pepSanctions: {
-            pep: "",
-            closeAssociate: "",
-            sanctions: "",
-        },
-        naturePurpose: {
-            purpose: "",
-            duration: "",
-            oneOff: "",
-        },
-        declarations: {
-            confirmInfo: "",
-            amlConsent: "",
-            idConsent: "",
-        },
+  const [formData, setFormData] = useState({
+    clientInformation: {
+      fullName: "",
+      dob: "",
+      abn: "",
+      registeredAddress: "",
+      residentialAddress: "",
+      taxResidency: "",
+      email: "",
+      phoneNumber: "",
+    },
+    clientType: { type: "", service: "" },
+    ownershipControl: {
+      directors: [""],
+      owners: [""],
+      pep: "",
+      ownershipFile: null,
+    },
+    sourceOfFunds: {
+      transactionValue: "",
+      transferMethod: "",
+      deliveryChannel: "",
+      fundDescription: "",
+    },
+    countryExposure: {
+      clientCountry: "",
+      ownerCountry: "",
+      connectedCountries: "",
+      fundsOriginCountry: "",
+    },
+    pepSanctions: { pep: "", closeAssociate: "", sanctions: "" },
+    naturePurpose: { purpose: "", duration: "", oneOff: "" },
+    declarations: { confirmInfo: "", amlConsent: "", idConsent: "" },
+  });
+
+  const pageMap = {
+    1: { component: ClientInformation, section: "clientInformation" },
+    2: { component: ClientType, section: "clientType" },
+    3: { component: OwnershipControl, section: "ownershipControl" },
+    4: { component: SourceOfFunds, section: "sourceOfFunds" },
+    5: { component: CountryExposure, section: "countryExposure" },
+    6: { component: PEPSanctions, section: "pepSanctions" },
+    7: { component: NaturePurpose, section: "naturePurpose" },
+    8: { component: Declarations, section: "declarations" },
+  };
+
+  const requiredFieldsMap = {
+    clientInformation: [
+      "fullName",
+      "dob",
+      "abn",
+      "registeredAddress",
+      "residentialAddress",
+      "taxResidency",
+      "email",
+      "phoneNumber",
+    ],
+    clientType: ["type", "service"],
+    ownershipControl: ["pep"],
+    sourceOfFunds: [
+      "transactionValue",
+      "transferMethod",
+      "deliveryChannel",
+      "fundDescription",
+    ],
+    countryExposure: [
+      "clientCountry",
+      "ownerCountry",
+      "connectedCountries",
+      "fundsOriginCountry",
+    ],
+    pepSanctions: ["pep", "closeAssociate", "sanctions"],
+    naturePurpose: ["purpose", "duration", "oneOff"],
+    declarations: ["confirmInfo", "amlConsent", "idConsent"],
+  };
+
+  const validatePage = () => {
+    const page = pageMap[currentPage];
+    if (!page) return true;
+
+    const data = formData[page.section];
+    const pageErrors = {};
+
+    // Required fields validation
+    requiredFieldsMap[page.section].forEach((field) => {
+      if (!data[field] || data[field].toString().trim() === "") {
+        pageErrors[field] = "This field is required";
+      }
     });
 
-    const validatePage = () => {
+    // Extra validations for Client Information
+    if (page.section === "clientInformation") {
+      if (data.abn && !/^\d{11}$/.test(data.abn)) {
+        pageErrors.abn = "ABN must be exactly 11 digits";
+      }
 
-        switch (currentPage) {
+      if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+        pageErrors.email = "Invalid email format";
+      }
 
-            case 1:{
-                data = formData.clientInformation;
-                if (!data.fullname || !data.dob || !data.abn || !data.registeredAddress || !data.residentialAddress || !data.taxResidency || !data.contactDetails) {
-                    return false;
-                }
-                
-                return true;
-            }
-            case 2:{
-                data = formData.clientType;
-                if (!data.type || !data.service) {
-                    return false;
-                }
-                return true;
-            }
+      if (data.phoneNumber && !/^[0-9+\-\s()]{7,15}$/.test(data.phoneNumber)) {
+        pageErrors.phoneNumber = "Invalid phone number";
+      }
 
-            case 3: data = formData.ownershipControl;
-
-            case 4: data = formData.sourceOfFunds;
-
-            case 5: data = formData.countryExposure;
-            
-            case 6: data = formData.pepSanctions;
-
-            case 7: data = formData.naturePurpose;
-
-            case 8: data = formData.declarations;
-
-
-        }
-
+      if (data.dob && !/^\d{4}-\d{2}-\d{2}$/.test(data.dob)) {
+        pageErrors.dob = "Date of birth must be YYYY-MM-DD";
+      }
     }
 
-    // Function to update a section
-    const updateSection = (section, data) => {
-        setFormData((prev) => ({
-        ...prev,
-        [section]: { ...prev[section], ...data },
-        }));
-    };
+    setErrors(pageErrors);
+    return Object.keys(pageErrors).length === 0;
+  };
 
-    // Render the current page
-    const renderPage = () => {
-        switch (currentPage) {
-        case 1:
-            return (
-            <ClientInformation
-                data={formData.clientInformation}
-                update={(data) => updateSection("clientInformation", data)}
-            />
-            );
-        case 2:
-            return (
-            <ClientType
-                data={formData.clientType}
-                update={(data) => updateSection("clientType", data)}
-            />
-            );
-        case 3:
-            return (
-            <OwnershipControl
-                data={formData.ownershipControl}
-                update={(data) => updateSection("ownershipControl", data)}
-            />
-            );
-        case 4:
-            return (
-            <SourceOfFunds
-                data={formData.sourceOfFunds}
-                update={(data) => updateSection("sourceOfFunds", data)}
-            />
-            );
-        case 5:
-            return (
-            <CountryExposure
-                data={formData.countryExposure}
-                update={(data) => updateSection("countryExposure", data)}
-            />
-            );
-        case 6:
-            return (
-            <PEPSanctions
-                data={formData.pepSanctions}
-                update={(data) => updateSection("pepSanctions", data)}
-            />
-            );
-        case 7:
-            return (
-            <NaturePurpose
-                data={formData.naturePurpose}
-                update={(data) => updateSection("naturePurpose", data)}
-            />
-            );
-        case 8:
-            return (
-            <Declarations
-                data={formData.declarations}
-                update={(data) => updateSection("declarations", data)}
-            />
-            );
-        default:
-            return null;
-        }
-    };
+  const updateSection = (section, newData) => {
+    setFormData((prev) => ({
+      ...prev,
+      [section]: { ...prev[section], ...newData },
+    }));
+  };
 
-    // Navigation
-  const nextPage = () => setCurrentPage((prev) => Math.min(prev + 1, 8));
-  const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const renderPage = () => {
+    const page = pageMap[currentPage];
+    if (!page) return null;
+
+    const Component = page.component;
 
     return (
+      <Component
+        data={formData[page.section]}
+        errors={errors}
+        update={(data) => updateSection(page.section, data)}
+      />
+    );
+  };
+
+  const nextPage = () => {
+    if (validatePage()) {
+      setCurrentPage((prev) => Math.min(prev + 1, 8));
+      setErrors({});
+    }
+  };
+
+  const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+
+  const handleSubmit = () => {
+    const confirmSubmit = window.confirm(
+      "Are you ready to submit the form? Please confirm all information is correct."
+    );
+
+    if (!confirmSubmit) return;
+
+    const submissionData = {
+      ...formData,
+    };
+
+    console.log("Form Submitted:", submissionData);
+  };
+
+  return (
     <>
-    <div className="h-20 items-center justify-between px-8">
+      <div className="px-8">
         <FormTopBar />
+
         <div>
-            <h1 className="text-2xl font-semibold">Form</h1>
-                <div className="mt-1 text-xs text-gray-500">
-                    Step {currentPage} of 8
-                </div>
+          <h1 className="text-2xl font-semibold">Form</h1>
+          <div className="mt-1 text-xs text-gray-500">
+            Step {currentPage} of 8
+          </div>
         </div>
 
-        {/* Main Content */}
         <div className="flex gap-6 px-8 mt-6">
-        
-            {/* Left Progress Card */}
-            <div className="w-72">
-                <FormProgress
-                    currentPage={currentPage}
-                    goToPage={(page) => setCurrentPage(page)}
-                />
-            </div>
-                {/* Load Component Based on Current Page */}
-                {renderPage()}
-              
-                    {currentPage > 1 && (
-                    <button
-                        type="button"
-                        onClick={prevPage}
-                        className="rounded-md bg-gray-300 px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-400"
-                    >
-                        Back
-                    </button>
-                    )}
-                    {currentPage < 8 ? (
-                    <button
-                        type="button"
-                        onClick={nextPage}
-                        className="rounded-md bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800"
-                    >
-                        Next
-                    </button>
-                    ) : (
-                    <button
-                        type="button"
-                        onClick={handleSubmit}
-                        className="rounded-md bg-green-600 px-4 py-2 text-xs font-semibold text-white hover:bg-green-700"
-                    >
-                        Submit
-                    </button>
-                    )}
-                </div>
-            </div>
+          {/* Sidebar */}
+          <div className="w-72">
+            <FormProgress
+              currentPage={currentPage}
+              goToPage={setCurrentPage}
+            />
+          </div>
 
+          {/* Main Form */}
+          <div className="flex flex-col flex-1">
+            {renderPage()}
+
+            {/* Navigation Buttons */}
+            <div className="flex justify-between mt-6">
+              {currentPage > 1 ? (
+                <button
+                  type="button"
+                  onClick={prevPage}
+                  className="rounded-md bg-gray-300 px-6 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-400"
+                >
+                  Back
+                </button>
+              ) : (
+                <div />
+              )}
+
+              {currentPage < 8 ? (
+                <button
+                  type="button"
+                  onClick={nextPage}
+                  className="rounded-md bg-slate-900 px-6 py-2 text-xs font-semibold text-white hover:bg-slate-800"
+                >
+                  Next
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="rounded-md bg-green-600 px-6 py-2 text-xs font-semibold text-white hover:bg-green-700"
+                >
+                  Submit
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
