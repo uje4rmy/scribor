@@ -9,12 +9,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ExternalLink, Download, FolderInput } from "lucide-react";
 import { Link } from "react-router";
-import axios from "axios";
+import { createApi } from "../../../components/utils/Api";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const BoardDropdownMenu = ({ intake, boardColumns, setMatters }) => {
+  const { getAccessTokenSilently } = useAuth0();
+  const api = createApi(getAccessTokenSilently);
+
   async function updateStatus(statusId) {
     try {
-      await axios.post("http://localhost:8081/api/matters/update-status", {
+      api.put("http://localhost:8081/api/matters/update-status", {
         clientId: intake.client_id,
         clientStatus: statusId,
       });

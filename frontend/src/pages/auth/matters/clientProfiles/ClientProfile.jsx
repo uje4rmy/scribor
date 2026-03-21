@@ -2,7 +2,6 @@ import Sidebar from "../../../../components/Sidebar";
 import AppTopBar from "../../../../components/AppTopBar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect, useMemo } from "react";
-import axios from "axios";
 import Oversight from "./Oversight";
 import Payments from "./Payments";
 import ProfileEditing from "./ProfileEditing";
@@ -102,8 +101,8 @@ const ClientProfile = () => {
         matter_id: clientProfile.matter_id,
         entity_id: clientProfile.entity_id,
       };
-
-      await axios.put(
+      console.log(dirtyFields);
+      api.put(
         "http://localhost:8081/api/matters/update-client-profile/",
         dirtyFields,
       );
@@ -150,10 +149,7 @@ const ClientProfile = () => {
         payment_date: newPaymentDate,
       };
 
-      const res = await axios.post(
-        "http://localhost:8081/api/payments",
-        payment,
-      );
+      const res = await api.post("http://localhost:8081/api/payments", payment);
 
       setPayments((prev) => [...prev, res.data]);
       setLogDraft({ ...DEFAULT_LOG });

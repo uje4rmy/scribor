@@ -13,28 +13,52 @@ import Billing from "./pages/auth/Billing.jsx";
 import Dashboard from "./pages/auth/Dashboard.jsx";
 import Matters from "./pages/auth/matters/Matters.jsx";
 import ClientProfile from "./pages/auth/matters/clientProfiles/ClientProfile.jsx";
+import { ProtectedRoute } from "./components/utils/ProtectedRoute.jsx";
+import Homepage from "./pages/Homepage.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-  },
-  { path: "/dashboard", element: <Dashboard /> },
-  {
-    path: "/due-diligence",
-    element: <DueDiligence />,
-  },
-  { path: "/help", element: <Help /> },
-  { path: "settings", element: <Settings /> },
-  {
-    path: "/billing",
-    element: <Billing />,
-  },
-  { path: "/matters", element: <Matters /> },
-  { path: "/client-profile/:clientId", element: <ClientProfile /> },
-  {
-    path: "/intake",
-    element: <Intake />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Homepage />,
+      },
+      { path: "/dashboard", element: <Dashboard /> },
+      {
+        path: "/due-diligence",
+        element: <DueDiligence />,
+      },
+      { path: "/help", element: <Help /> },
+      { path: "settings", element: <Settings /> },
+      {
+        path: "/billing",
+        element: <Billing />,
+      },
+      {
+        path: "/matters",
+        element: (
+          <ProtectedRoute params={"/matters"}>
+            <Matters />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/client-profile/:clientId",
+        element: (
+          <ProtectedRoute>
+            <ClientProfile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/intake",
+        element: <Intake />,
+      },
+    ],
   },
 ]);
 
