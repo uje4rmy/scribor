@@ -139,12 +139,12 @@ const Payments = ({
                   step="0.01"
                   value={logDraft.payment_amount}
                   onChange={(e) => {
-                    const value = e.target.value;
-                    if (value <= 0) return;
-                    setLogDraft((f) => ({
-                      ...f,
-                      payment_amount: value,
-                    }));
+                    setLogDraft((f) => {
+                      return {
+                        ...f,
+                        payment_amount: e.target.value,
+                      };
+                    });
                   }}
                   required
                   className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
