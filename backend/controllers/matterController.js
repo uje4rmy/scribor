@@ -1,5 +1,11 @@
 const pool = require("../db");
-const { loadQuery, generateId, errorRes } = require("../utils/utils");
+const {
+  loadQuery,
+  errorRes,
+  allowedClientFields,
+  allowedEntityFields,
+  allowedMatterFields,
+} = require("../utils/utils");
 
 module.exports = {
   getMatters: async (req, res) => {
@@ -16,7 +22,6 @@ module.exports = {
 
       return res.status(200).json(results);
     } catch (error) {
-      console.error("GET Query Error: ", error);
       return errorRes(res, 500, "Failed to retrieve matters.");
     }
   },
@@ -64,7 +69,6 @@ module.exports = {
         .status(200)
         .json({ success: true, message: "Client status updated" });
     } catch (error) {
-      console.error("POST Query Error: ", error);
       return errorRes(res, 500, "Failed to update client status.");
     }
   },
@@ -72,18 +76,40 @@ module.exports = {
     const connection = await pool.getConnection();
 
     try {
+      if (!req.auth?.sub) {
+        return errorRes(res, 401, "Unauthorized access.");
+      }
+      const userId = req.auth.sub.split("|")[1];
+
       const data = req.body;
 
-      const sortByPrefix = (prefix) =>
-        Object.fromEntries(
-          Object.entries(req.body).filter(
-            ([key]) => key.startsWith(prefix) && !key.endsWith("_id"),
-          ),
-        );
+      const clientTable = {};
+      const matterTable = {};
+      const entityTable = {};
 
-      const clientTable = sortByPrefix("client_");
-      const matterTable = sortByPrefix("matter_");
-      const entityTable = sortByPrefix("entity_");
+      allowedClientFields().forEach((field) => {
+        if (req.body[field] !== undefined) {
+          clientTable[field] = req.body[field];
+        }
+      });
+      allowedEntityFields().forEach((field) => {
+        if (req.body[field] !== undefined) {
+          entityTable[field] = req.body[field];
+        }
+      });
+      allowedMatterFields().forEach((field) => {
+        if (req.body[field] !== undefined) {
+          matterTable[field] = req.body[field];
+        }
+      });
+
+      const [client] = await connection.query(
+        "SELECT user_id FROM CLIENT WHERE client_id = ?",
+        [data.client_id],
+      );
+      if (!client.length || client[0].user_id !== userId) {
+        return errorRes(res, 403, "Unauthorized access.");
+      }
 
       await connection.beginTransaction();
 
@@ -115,7 +141,6 @@ module.exports = {
         .json({ success: true, message: "Client profile updated." });
     } catch (error) {
       await connection.rollback();
-      console.error("POST Query Error: ", error);
       return errorRes(res, 500, "Failed to update client profile.");
     } finally {
       connection.release();
