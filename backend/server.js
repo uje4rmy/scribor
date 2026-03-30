@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 8081;
 
 const matterRoutes = require("./routes/matterRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const { apiLimiter } = require("./middleware/rateLimiter");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(
 );
 app.use(helmet());
 app.use(express.json({ limit: "100kb" }));
+app.use(apiLimiter);
 
 app.use("/api", matterRoutes);
 app.use("/api", paymentRoutes);
