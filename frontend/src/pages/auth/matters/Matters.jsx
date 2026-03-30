@@ -9,9 +9,12 @@ const Matters = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [matters, setMatters] = useState([]);
+  const [error, setError] = useState(null);
 
   const { user, isLoading, getAccessTokenSilently, loginWithRedirect } =
     useAuth0();
+
+  if (error) throw error;
 
   useEffect(() => {
     if (isLoading || !user) return;
@@ -21,6 +24,7 @@ const Matters = () => {
         const api = createApi(getAccessTokenSilently);
         const res = await api.get("/matters");
         setMatters(res.data);
+        setError(false);
       } catch (error) {
         // TEMPORARY
         if (error.error === "consent_required") {
@@ -31,6 +35,7 @@ const Matters = () => {
             },
           });
         }
+        setError(error);
         console.log(error);
       } finally {
         setLoading(false);

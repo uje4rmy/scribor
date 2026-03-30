@@ -11,6 +11,7 @@ import { ExternalLink, Download, FolderInput } from "lucide-react";
 import { Link } from "react-router";
 import { createApi } from "../../../components/utils/Api";
 import { useAuth0 } from "@auth0/auth0-react";
+import { toast } from "sonner";
 
 const BoardDropdownMenu = ({ intake, boardColumns, setMatters }) => {
   const { getAccessTokenSilently } = useAuth0();
@@ -18,7 +19,7 @@ const BoardDropdownMenu = ({ intake, boardColumns, setMatters }) => {
 
   async function updateStatus(statusId) {
     try {
-      api.put("http://localhost:8081/api/matters/update-status", {
+      await api.put("/matters/update-status", {
         clientId: intake.client_id,
         clientStatus: statusId,
       });
@@ -31,6 +32,9 @@ const BoardDropdownMenu = ({ intake, boardColumns, setMatters }) => {
         ),
       );
     } catch (error) {
+      if (error.response?.status === 429) {
+        toast.error("Too many matter updates, please try again later.");
+      }
       console.log(error);
     }
   }

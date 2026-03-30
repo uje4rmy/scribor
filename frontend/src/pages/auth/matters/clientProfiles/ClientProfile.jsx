@@ -13,6 +13,7 @@ import { format } from "date-fns";
 import Card from "../../../../components/clientProfiles/Card";
 import { useParams } from "react-router";
 import { createApi } from "../../../../components/utils/Api";
+import { toast } from "sonner";
 
 function checkNull(field) {
   return field === null || field === "" ? "Not Provided" : field;
@@ -102,7 +103,7 @@ const ClientProfile = () => {
         entity_id: clientProfile.entity_id,
       };
 
-      api.put(
+      await api.put(
         "http://localhost:8081/api/matters/update-client-profile/",
         dirtyFields,
       );
@@ -114,6 +115,10 @@ const ClientProfile = () => {
       setProfileEditing(false);
       setProfileDraft({});
     } catch (error) {
+      if (error.response?.status === 429) {
+        toast.error(error.response?.data.message);
+      }
+
       console.log(error);
     }
   }
