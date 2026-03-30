@@ -101,7 +101,7 @@ const ClientProfile = () => {
         matter_id: clientProfile.matter_id,
         entity_id: clientProfile.entity_id,
       };
-      console.log(dirtyFields);
+
       api.put(
         "http://localhost:8081/api/matters/update-client-profile/",
         dirtyFields,
@@ -145,11 +145,13 @@ const ClientProfile = () => {
       const newPaymentDate = `${format(payDate, "yyyy-MM-dd")} ${payTime}`;
       const payment = {
         ...logDraft,
-        client_id: clientProfile.client_id,
         payment_date: newPaymentDate,
       };
 
-      const res = await api.post("http://localhost:8081/api/payments", payment);
+      const res = await api.post(
+        `http://localhost:8081/api/payments/${clientProfile.client_id}`,
+        payment,
+      );
 
       setPayments((prev) => [...prev, res.data]);
       setLogDraft({ ...DEFAULT_LOG });
