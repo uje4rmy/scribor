@@ -103,10 +103,7 @@ const ClientProfile = () => {
         entity_id: clientProfile.entity_id,
       };
 
-      await api.put(
-        "http://localhost:8081/api/matters/update-client-profile/",
-        dirtyFields,
-      );
+      await api.put("/matters/update-client-profile/", dirtyFields);
 
       setClientProfile((prev) => ({
         ...prev,
@@ -154,7 +151,7 @@ const ClientProfile = () => {
       };
 
       const res = await api.post(
-        `http://localhost:8081/api/payments/${clientProfile.client_id}`,
+        `/payments/${clientProfile.client_id}`,
         payment,
       );
 
