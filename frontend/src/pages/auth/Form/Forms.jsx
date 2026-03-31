@@ -1,5 +1,5 @@
-import FormTopBar from "../FormTopBar";
-import FormProgress from "../FormProgress/FormProgress";
+import FormTopBar from "../../../components/FormTopBar";
+import FormProgress from "../../../components/FormProgress/FormProgress";
 import ClientInformation from "./ClientInformation";
 import ClientType from "./ClientType";
 import OwnershipControl from "./OwnershipControl";
@@ -158,38 +158,36 @@ const Forms = () => {
 
   const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
-const handleSubmit = () => {
-  const { confirmInfo, amlConsent, idConsent } = formData.declarations;
+  const handleSubmit = () => {
+    const { confirmInfo, amlConsent, idConsent } = formData.declarations;
 
-  // Ensure all declarations are YES
-  if (confirmInfo !== "yes" || amlConsent !== "yes" || idConsent !== "yes") {
-    setErrors({
-      confirmInfo:
-        confirmInfo !== "yes"
-          ? "You must confirm the information is true"
-          : "",
-      amlConsent:
-        amlConsent !== "yes"
-          ? "You must consent to AML screening"
-          : "",
-      idConsent:
-        idConsent !== "yes"
-          ? "You must consent to identity verification"
-          : "",
-    });
+    // Ensure all declarations are YES
+    if (confirmInfo !== "yes" || amlConsent !== "yes" || idConsent !== "yes") {
+      setErrors({
+        confirmInfo:
+          confirmInfo !== "yes"
+            ? "You must confirm the information is true"
+            : "",
+        amlConsent:
+          amlConsent !== "yes" ? "You must consent to AML screening" : "",
+        idConsent:
+          idConsent !== "yes"
+            ? "You must consent to identity verification"
+            : "",
+      });
 
-        alert("All declarations must be accepted before submitting.");
-        return;
+      alert("All declarations must be accepted before submitting.");
+      return;
     }
 
     const confirmSubmit = window.confirm(
-        "Are you ready to submit the form? Please confirm all information is correct."
+      "Are you ready to submit the form? Please confirm all information is correct.",
     );
 
     if (!confirmSubmit) return;
 
     console.log("Form Submitted:", formData);
-    };
+  };
 
   return (
     <>
@@ -206,10 +204,7 @@ const handleSubmit = () => {
         <div className="flex gap-6 px-8 mt-6">
           {/* Sidebar */}
           <div className="w-72">
-            <FormProgress
-              currentPage={currentPage}
-              goToPage={setCurrentPage}
-            />
+            <FormProgress currentPage={currentPage} goToPage={setCurrentPage} />
           </div>
 
           {/* Main Form */}
