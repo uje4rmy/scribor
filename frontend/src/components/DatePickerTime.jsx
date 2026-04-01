@@ -11,15 +11,10 @@ import {
 import { format } from "date-fns";
 import { ChevronDownIcon } from "lucide-react";
 
-export function DatePickerTime({
-  date,
-  time,
-  setDate,
-  setTime,
-  error,
-  setError,
-}) {
+function DatePickerTime({ value, onChange, error, setError }) {
   const [open, setOpen] = React.useState(false);
+  const date = value?.date;
+  const time = value?.time || "12:00:00";
 
   return (
     <FieldGroup className="flex w-full flex-row gap-1">
@@ -43,7 +38,7 @@ export function DatePickerTime({
               captionLayout="dropdown"
               defaultMonth={date}
               onSelect={(selectedDate) => {
-                setDate(selectedDate);
+                onChange({ ...value, date: selectedDate });
                 setError(false);
                 setOpen(false);
               }}
@@ -59,10 +54,14 @@ export function DatePickerTime({
           id="time-picker"
           step="1"
           value={time}
-          onChange={(e) => setTime(e.target.value)}
+          onChange={(e) => {
+            onChange({ ...value, time: e.target.value });
+          }}
           className="appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden"
         />
       </Field>
     </FieldGroup>
   );
 }
+
+export default React.memo(DatePickerTime);

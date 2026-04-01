@@ -6,26 +6,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { memo } from "react";
 
-const LogDropdown = ({ value, valKey, options, setLogDraft, placeholder }) => {
+const LogDropdown = ({ value, onChange, options, placeholder }) => {
   return (
-    <Select
-      value={value}
-      onValueChange={(e) =>
-        setLogDraft((f) => ({
-          ...f,
-          [valKey]: e,
-        }))
-      }
-    >
+    <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="mt-0.5 w-full rounded-md border shadow-none bg-white border-slate-200 px-2.5 py-1.5 text-sm data-[placeholder]:text-black">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="max-h-60 overflow-y-auto">
         <SelectGroup>
           {options.map((e) => (
             <SelectItem key={e.value} value={e.value}>
-              {e.label ? e.label : e.value}
+              {e.label ? e.label : e.name ? `${e.name} (${e.value})` : e.value}
             </SelectItem>
           ))}
         </SelectGroup>
@@ -34,4 +27,4 @@ const LogDropdown = ({ value, valKey, options, setLogDraft, placeholder }) => {
   );
 };
 
-export default LogDropdown;
+export default memo(LogDropdown);

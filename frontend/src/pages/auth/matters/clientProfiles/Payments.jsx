@@ -1,12 +1,14 @@
-import { DatePickerTime } from "../../../../components/DatePickerTime";
+import DatePickerTime from "../../../../components/DatePickerTime";
 import { useState, useMemo } from "react";
 import DateRangeFilter from "../../../../components/clientProfiles/filters/DateRangeFilter";
 import StatusFilter from "../../../../components/clientProfiles/filters/StatusFilter";
 import OrderFilter from "../../../../components/clientProfiles/filters/OrderFilter";
 import PaymentTable from "../../../../components/clientProfiles/PaymentTable";
 import LogDropdown from "../../../../components/clientProfiles/LogDropdown";
+import { useForm, useWatch } from "react-hook-form";
+import { Controller } from "react-hook-form";
+import Currencies from "../../../../assets/currencies";
 
-const currencies = [{ value: "AUD" }, { value: "USD" }, { value: "GBP" }];
 const paidBy = [
   { value: "client", label: "Client" },
   { value: "thirdparty", label: "Third Party" },
@@ -25,21 +27,40 @@ const status = [
   { value: "pending", label: "Pending" },
 ];
 
+const DEFAULT_LOG = {
+  payment_date: { date: undefined, time: "12:00:00" },
+  payment_amount: "",
+  payment_currency: "AUD",
+  payment_paidby: "client",
+  payment_payer_name: "",
+  payment_destination: "trust",
+  payment_method: "eft",
+  payment_status: "complete",
+  payment_ref: "",
+  payment_flag: false,
+  payment_reason: "",
+};
+
 const Payments = ({
   payments,
-  logDraft,
-  setLogDraft,
   showLogPayment,
   setShowLogPayment,
   handleLogPayment,
 }) => {
-  const [date, setDate] = useState(undefined);
-  const [time, setTime] = useState("12:00:00");
   const [error, setError] = useState(false);
   const [dateRange, setDateRange] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [orderFilter, setOrderFilter] = useState("");
   const [search, setSearch] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({ defaultValues: { ...DEFAULT_LOG } });
+  const paymentPaidBy = useWatch({ control, name: "payment_paidby" });
+  const paymentFlag = useWatch({ control, name: "payment_flag" });
 
   const filteredPayments = useMemo(() => {
     let result = [...payments];
@@ -108,188 +129,180 @@ const Payments = ({
           </button>
         </div>
 
-        {showLogPayment && (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleLogPayment(date, time, setError, setDate, setTime);
-            }}
-            className="mt-4 rounded-lg border border-slate-200 bg-slate-50/50 p-4"
-          >
-            <h3 className="text-sm font-medium text-slate-900">Log payment</h3>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              <div>
-                <label className="block text-xs text-slate-500">
-                  Date & Time
-                </label>
-                <DatePickerTime
-                  date={date}
-                  time={time}
-                  setDate={setDate}
-                  setTime={setTime}
-                  error={error}
-                  setError={setError}
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-slate-500">Amount</label>
-                <input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={logDraft.payment_amount}
-                  onChange={(e) => {
-                    setLogDraft((f) => {
-                      return {
-                        ...f,
-                        payment_amount: e.target.value,
-                      };
-                    });
-                  }}
-                  required
-                  className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-slate-500">Currency</label>
-                <LogDropdown
-                  value={logDraft.payment_currency}
-                  valKey={"payment_currency"}
-                  options={currencies}
-                  setLogDraft={setLogDraft}
-                  placeholder={"AUD"}
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-slate-500">Paid By</label>
-                <LogDropdown
-                  value={logDraft.payment_paidby}
-                  valKey={"payment_paidby"}
-                  options={paidBy}
-                  setLogDraft={setLogDraft}
-                  placeholder={"Client"}
-                />
-              </div>
-              {logDraft.payment_paidby === "thirdparty" && (
-                <div>
-                  <label className="block text-xs text-slate-500">
-                    Payer Name
-                  </label>
-                  <input
-                    type="text"
-                    value={logDraft.payment_payer_name}
-                    onChange={(e) =>
-                      setLogDraft((f) => ({
-                        ...f,
-                        payment_payer_name: e.target.value,
-                      }))
-                    }
-                    required={logDraft.payment_paidby === "thirdparty"}
-                    className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
-                    placeholder="Third-party Payer"
-                  />
-                </div>
-              )}
-              <div>
-                <label className="block text-xs text-slate-500">
-                  Destination
-                </label>
-                <LogDropdown
-                  value={logDraft.payment_destination}
-                  valKey={"payment_destination"}
-                  options={accounts}
-                  setLogDraft={setLogDraft}
-                  placeholder={"Trust"}
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-slate-500">
-                  Payment Method
-                </label>
-                <LogDropdown
-                  value={logDraft.payment_method}
-                  valKey={"payment_method"}
-                  options={methods}
-                  setLogDraft={setLogDraft}
-                  placeholder={"EFT"}
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-slate-500">Status</label>
-                <LogDropdown
-                  value={logDraft.status}
-                  valKey={"payment_status"}
-                  options={status}
-                  setLogDraft={setLogDraft}
-                  placeholder={"Complete"}
-                />
-              </div>
-              <div className="sm:col-span-2">
-                <label className="block text-xs text-slate-500">
-                  Reference / Description
-                </label>
-                <input
-                  type="text"
-                  value={logDraft.payment_ref}
-                  onChange={(e) =>
-                    setLogDraft((f) => ({
-                      ...f,
-                      payment_ref: e.target.value,
-                    }))
-                  }
-                  className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
-                  placeholder="Reference or Description"
-                />
-              </div>
-              <div className="flex flex-col gap-1 sm:col-span-2">
-                <label className="flex items-center gap-2 text-xs text-slate-700">
-                  <input
-                    type="checkbox"
-                    checked={logDraft.payment_flag === 0 ? false : true}
-                    onChange={(e) =>
-                      setLogDraft((f) => ({
-                        ...f,
-                        payment_flag: e.target.checked === false ? 0 : 1,
-                      }))
-                    }
-                    className="rounded border-slate-300"
-                  />
-                  Flag as unusual
-                </label>
-                {logDraft.payment_flag === 1 && (
-                  <input
-                    type="text"
-                    value={logDraft.payment_reason}
-                    onChange={(e) =>
-                      setLogDraft((f) => ({
-                        ...f,
-                        payment_reason: e.target.value,
-                      }))
-                    }
-                    className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
-                    placeholder="Reason"
-                    required={logDraft.payment_flag === 1}
+        <form
+          onSubmit={handleSubmit((data) => handleLogPayment(data, setError))}
+          className={`mt-4 rounded-lg border border-slate-200 bg-slate-50/50 p-4 ${showLogPayment ? "block" : "hidden"}`}
+        >
+          <h3 className="text-sm font-medium text-slate-900">Log payment</h3>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div>
+              <label className="block text-xs text-slate-500">
+                Date & Time
+              </label>
+              <Controller
+                name="payment_date"
+                control={control}
+                render={({ field }) => (
+                  <DatePickerTime
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={error}
+                    setError={setError}
                   />
                 )}
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-500">Amount</label>
+              <input
+                {...register("payment_amount")}
+                type="number"
+                min="0"
+                step="0.01"
+                required
+                className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-500">Currency</label>
+              <Controller
+                name="payment_currency"
+                control={control}
+                render={({ field }) => (
+                  <LogDropdown
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={Currencies}
+                    placeholder={"AUD"}
+                  />
+                )}
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-500">Paid By</label>
+              <Controller
+                name="payment_paidby"
+                control={control}
+                render={({ field }) => (
+                  <LogDropdown
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={paidBy}
+                    placeholder={"Client"}
+                  />
+                )}
+              />
+            </div>
+            {paymentPaidBy === "thirdparty" && (
+              <div>
+                <label className="block text-xs text-slate-500">
+                  Payer Name
+                </label>
+                <input
+                  {...register("payment_payer_name")}
+                  type="text"
+                  required={paymentPaidBy === "thirdparty"}
+                  className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+                  placeholder="Third-party Payer"
+                />
               </div>
+            )}
+            <div>
+              <label className="block text-xs text-slate-500">
+                Destination
+              </label>
+              <Controller
+                name="payment_destination"
+                control={control}
+                render={({ field }) => (
+                  <LogDropdown
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={accounts}
+                    placeholder={"Trust"}
+                  />
+                )}
+              />
             </div>
-            <div className="mt-4 flex gap-2">
-              <button
-                type="submit"
-                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowLogPayment(false)}
-                className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-              >
-                Cancel
-              </button>
+            <div>
+              <label className="block text-xs text-slate-500">
+                Payment Method
+              </label>
+              <Controller
+                name="payment_method"
+                control={control}
+                render={({ field }) => (
+                  <LogDropdown
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={methods}
+                    placeholder={"EFT"}
+                  />
+                )}
+              />
             </div>
-          </form>
-        )}
+            <div>
+              <label className="block text-xs text-slate-500">Status</label>
+              <Controller
+                name="payment_status"
+                control={control}
+                render={({ field }) => (
+                  <LogDropdown
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={status}
+                    placeholder={"Complete"}
+                  />
+                )}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-xs text-slate-500">
+                Reference / Description
+              </label>
+              <input
+                {...register("payment_ref")}
+                type="text"
+                className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+                placeholder="Reference or Description"
+              />
+            </div>
+            <div className="flex flex-col gap-1 sm:col-span-2">
+              <label className="flex items-center gap-2 text-xs text-slate-700">
+                <input
+                  type="checkbox"
+                  {...register("payment_flag")}
+                  className="rounded border-slate-300"
+                />
+                Flag as unusual
+              </label>
+              {paymentFlag && (
+                <input
+                  {...register("payment_reason")}
+                  type="text"
+                  className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+                  placeholder="Reason"
+                  required={paymentFlag === true}
+                />
+              )}
+            </div>
+          </div>
+          <div className="mt-4 flex gap-2">
+            <button
+              type="submit"
+              className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowLogPayment(false)}
+              className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
 
         <div className="mt-4 flex flex-wrap gap-2">
           <div className="flex flex-col">
