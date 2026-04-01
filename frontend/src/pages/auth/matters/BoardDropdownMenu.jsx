@@ -42,10 +42,10 @@ const BoardDropdownMenu = ({ intake, boardColumns, setMatters }) => {
   return (
     <DropdownMenuContent className="overflow-visible">
       <DropdownMenuGroup>
-        <DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link
             to={`/client-profile/${intake.client_id}`}
-            className="flex items-center"
+            className="flex items-center cursor-pointer"
           >
             <ExternalLink className="mr-2 h-4 w-4" />
             Open Client Profile
@@ -60,8 +60,12 @@ const BoardDropdownMenu = ({ intake, boardColumns, setMatters }) => {
         </DropdownMenuSubTrigger>
         <DropdownMenuSubContent>
           <DropdownMenuGroup>
-            <DropdownMenuItem>Audit Pack</DropdownMenuItem>
-            <DropdownMenuItem>Suspicious Matter Report</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              Audit Pack
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              Suspicious Matter Report
+            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuSubContent>
       </DropdownMenuSub>
@@ -80,6 +84,7 @@ const BoardDropdownMenu = ({ intake, boardColumns, setMatters }) => {
                   onClick={() => {
                     updateStatus(status.id);
                   }}
+                  className="cursor-pointer"
                 >
                   {status.menuLabel}
                 </DropdownMenuItem>

@@ -51,7 +51,7 @@ const BoardCard = ({ intake, boardColumns, setMatters }) => {
               >
                 {intake.client_level.toUpperCase()}
               </span>
-              {intake.client_flagged === 1 && (
+              {!!intake.client_flagged && (
                 <span
                   className={`inline-flex h-5 items-center rounded px-2 text-[11px] font-medium uppercase ${checkFlagged(intake.client_flagged)}`}
                 >

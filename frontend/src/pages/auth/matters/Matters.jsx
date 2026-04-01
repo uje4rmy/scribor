@@ -56,7 +56,7 @@ const Matters = () => {
         m.client_level?.toLowerCase().includes(q) ||
         m.matter_type?.toLowerCase().includes(q) ||
         m.client_type?.toLowerCase().includes(q) ||
-        (m.client_flagged === 1 && "flagged".includes(q))
+        (!!m.client_flagged && "flagged".includes(q))
       );
     });
   }, [search, matters]);
