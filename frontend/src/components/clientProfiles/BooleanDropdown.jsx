@@ -6,22 +6,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { memo } from "react";
 
-const BooleanDropdown = ({ profileDraft, setProfileDraft, fieldKey }) => {
+const BooleanDropdown = ({ value, onChange }) => {
   return (
     <Select
-      value={
-        profileDraft[fieldKey] === 1
-          ? "yes"
-          : profileDraft[fieldKey] === 0
-            ? "no"
-            : ""
-      }
-      onValueChange={(value) => {
-        setProfileDraft((prev) => ({
-          ...prev,
-          [fieldKey]: value === "yes" ? 1 : 0,
-        }));
+      value={value ? "yes" : "no"}
+      onValueChange={(val) => {
+        onChange(val === "yes" ? true : false);
       }}
     >
       <SelectTrigger className="mt-0.5 w-full rounded-md border shadow-none border-slate-200 px-2.5 py-1.5 text-sm">
@@ -37,4 +29,4 @@ const BooleanDropdown = ({ profileDraft, setProfileDraft, fieldKey }) => {
   );
 };
 
-export default BooleanDropdown;
+export default memo(BooleanDropdown);

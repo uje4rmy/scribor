@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 
-export function DatePicker({ profileDraft, setProfileDraft }) {
+export function DatePicker({ value, onChange }) {
   const [open, setOpen] = React.useState(false);
-  const profileDob = new Date(profileDraft.client_dob);
+  const profileDob = new Date(value);
 
   return (
     <Field>
@@ -32,10 +32,7 @@ export function DatePicker({ profileDraft, setProfileDraft }) {
             defaultMonth={profileDob}
             captionLayout="dropdown"
             onSelect={(selectedDate) => {
-              setProfileDraft((prev) => ({
-                ...prev,
-                client_dob: format(selectedDate, "yyyy-MM-dd"),
-              }));
+              onChange(format(selectedDate, "yyyy-MM-dd"));
               setOpen(false);
             }}
             disabled={(date) => date > new Date()}

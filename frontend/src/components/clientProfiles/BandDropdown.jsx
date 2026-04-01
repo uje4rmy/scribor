@@ -7,19 +7,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { memo } from "react";
 
-const BandDropdown = ({ profileDraft, setProfileDraft, fieldKey }) => {
+const BandDropdown = ({ value, onChange }) => {
   return (
     <Select
-      value={
-        MATTER_BAND_VALUES.find((e) => e.value === profileDraft[fieldKey]).value
-      }
-      onValueChange={(value) =>
-        setProfileDraft((prev) => ({
-          ...prev,
-          [fieldKey]: parseInt(value),
-        }))
-      }
+      value={MATTER_BAND_VALUES.find((b) => b.value === value).value}
+      onValueChange={(val) => onChange(parseInt(val))}
     >
       <SelectTrigger className="mt-0.5 w-full rounded-md border shadow-none border-slate-200 px-2.5 py-1.5 text-sm">
         <SelectValue />
@@ -37,4 +31,4 @@ const BandDropdown = ({ profileDraft, setProfileDraft, fieldKey }) => {
   );
 };
 
-export default BandDropdown;
+export default memo(BandDropdown);

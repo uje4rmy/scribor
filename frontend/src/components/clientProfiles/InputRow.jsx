@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 const InputRow = ({ label, value, className }) => {
   return (
     <div className={`flex flex-col gap-0.5 ${className}`}>
@@ -7,4 +9,4 @@ const InputRow = ({ label, value, className }) => {
   );
 };
 
-export default InputRow;
+export default memo(InputRow);
