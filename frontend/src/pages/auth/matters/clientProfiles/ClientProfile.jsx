@@ -14,6 +14,8 @@ import Card from "../../../../components/clientProfiles/Card";
 import { useParams } from "react-router";
 import { createApi } from "../../../../components/utils/Api";
 import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { Spinner } from "@/components/ui/spinner";
 
 function checkNull(field) {
   return field === null || field === "" ? "Not Provided" : field;
@@ -30,41 +32,22 @@ function checkDirectors(directors) {
   }
 }
 
-function getDirtyFields(original, draft) {
-  // Only stores the fields that have been changed
+function getDirtyFields(dirtyFields, draft) {
   const changed = {};
-
-  for (const key in draft) {
-    if (draft[key] !== original[key]) {
-      changed[key] = draft[key];
-    }
-  }
+  Object.keys(dirtyFields).forEach((key) => {
+    changed[key] = draft[key];
+  });
   return changed;
 }
-
-const DEFAULT_LOG = {
-  payment_date: "",
-  payment_amount: "",
-  payment_currency: "AUD",
-  payment_paidby: "client",
-  payment_payer_name: "",
-  payment_destination: "trust",
-  payment_method: "eft",
-  payment_status: "complete",
-  payment_ref: "",
-  payment_flag: 0,
-  payment_reason: "",
-};
 
 const ClientProfile = () => {
   const [clientProfile, setClientProfile] = useState([]);
   const [payments, setPayments] = useState([]);
   const [profileEditing, setProfileEditing] = useState(false);
-  const [profileDraft, setProfileDraft] = useState({});
   const [loading, setLoading] = useState(true);
   const [showLogPayment, setShowLogPayment] = useState(false);
-  const [logDraft, setLogDraft] = useState({ ...DEFAULT_LOG });
   const [error, setError] = useState(null);
+  const [resetFormKey, setFormKey] = useState(0);
 
   const { user, isLoading, getAccessTokenSilently } = useAuth0();
   const api = useMemo(
@@ -72,6 +55,14 @@ const ClientProfile = () => {
     [getAccessTokenSilently],
   );
   const { clientId } = useParams();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors, dirtyFields: boolDirty },
+  } = useForm({ defaultValues: { ...clientProfile } });
 
   useEffect(() => {
     if (isLoading || !user) return;
@@ -83,6 +74,7 @@ const ClientProfile = () => {
 
         setClientProfile(resProfile.data[0]);
         setPayments(resPayments.data);
+        reset(resProfile.data[0]);
       } catch (error) {
         setError(error);
       } finally {
@@ -94,10 +86,10 @@ const ClientProfile = () => {
 
   if (error) throw error;
 
-  async function saveProfileEdit() {
+  async function saveProfileEdit(formData) {
     try {
       const dirtyFields = {
-        ...getDirtyFields(clientProfile, profileDraft),
+        ...getDirtyFields(boolDirty, formData),
         client_id: clientProfile.client_id,
         matter_id: clientProfile.matter_id,
         entity_id: clientProfile.entity_id,
@@ -110,7 +102,6 @@ const ClientProfile = () => {
         ...dirtyFields,
       }));
       setProfileEditing(false);
-      setProfileDraft({});
     } catch (error) {
       if (error.response?.status === 429) {
         toast.error(error.response?.data.message);
@@ -121,32 +112,27 @@ const ClientProfile = () => {
   }
 
   function cancelProfileEdit() {
+    reset(clientProfile);
+    setFormKey((k) => k + 1);
     setProfileEditing(false);
-    setProfileDraft({});
   }
 
   function startProfileEdit() {
-    setProfileDraft({ ...clientProfile });
     setProfileEditing(true);
   }
 
-  async function handleLogPayment(
-    payDate,
-    payTime,
-    setError,
-    setDate,
-    setTime,
-  ) {
+  async function handleLogPayment(formData, setError) {
     try {
-      if (!payDate) {
+      const { date, time } = formData.payment_date || {};
+      if (!date) {
         // Date validation
         setError(true);
         return;
       }
 
-      const newPaymentDate = `${format(payDate, "yyyy-MM-dd")} ${payTime}`;
+      const newPaymentDate = `${format(date, "yyyy-MM-dd")} ${time}`;
       const payment = {
-        ...logDraft,
+        ...formData,
         payment_date: newPaymentDate,
       };
 
@@ -156,9 +142,6 @@ const ClientProfile = () => {
       );
 
       setPayments((prev) => [...prev, res.data]);
-      setLogDraft({ ...DEFAULT_LOG });
-      setDate(undefined);
-      setTime("12:00:00");
       setError(false);
       setShowLogPayment(false);
     } catch (error) {
@@ -187,47 +170,52 @@ const ClientProfile = () => {
           ) : (
             <>
               <div className="grid gap-4 md:grid-cols-2 lg:gap-6">
-                <Card
-                  title="Client Profile"
-                  className="min-h-0"
-                  headerAction={
-                    profileEditing ? (
-                      <div className="flex gap-2">
+                <form
+                  onSubmit={handleSubmit(saveProfileEdit)}
+                  className="contents"
+                >
+                  <Card
+                    title="Client Profile"
+                    className="min-h-0"
+                    headerAction={
+                      profileEditing ? (
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={cancelProfileEdit}
+                            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            className="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-800"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      ) : (
                         <button
                           type="button"
-                          onClick={cancelProfileEdit}
+                          onClick={startProfileEdit}
                           className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
                         >
-                          Cancel
+                          Edit
                         </button>
-                        <button
-                          type="button"
-                          onClick={saveProfileEdit}
-                          className="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-800"
-                        >
-                          Save
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={startProfileEdit}
-                        className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                      >
-                        Edit
-                      </button>
-                    )
-                  }
-                >
-                  {profileEditing ? (
-                    <ProfileEditing
-                      clientProfile={clientProfile}
-                      profileDraft={profileDraft}
-                      setProfileDraft={setProfileDraft}
-                      checkDirectors={checkDirectors}
-                    />
-                  ) : (
-                    <>
+                      )
+                    }
+                  >
+                    <div className={profileEditing ? "block" : "hidden"}>
+                      <ProfileEditing
+                        key={resetFormKey}
+                        entityDirectors={clientProfile.entity_directors}
+                        checkDirectors={checkDirectors}
+                        register={register}
+                        control={control}
+                      />
+                    </div>
+
+                    <div className={!profileEditing ? "block" : "hidden"}>
                       <SectionLabel label={"Client Details"} />
                       <div className="grid gap-2 sm:grid-cols-2">
                         <InputRow
@@ -328,9 +316,7 @@ const ClientProfile = () => {
                         <InputRow
                           label="Trust Account Expected"
                           value={
-                            clientProfile.matter_trust_expected === 0
-                              ? "No"
-                              : "Yes"
+                            clientProfile.matter_trust_expected ? "Yes" : "No"
                           }
                         />
                         <InputRow
@@ -355,9 +341,9 @@ const ClientProfile = () => {
                           }
                         />
                       </div>
-                    </>
-                  )}
-                </Card>
+                    </div>
+                  </Card>
+                </form>
 
                 <Card title="Oversight" className="min-h-0 flex-1">
                   <Oversight
@@ -369,8 +355,6 @@ const ClientProfile = () => {
 
               <Payments
                 payments={payments}
-                logDraft={logDraft}
-                setLogDraft={setLogDraft}
                 showLogPayment={showLogPayment}
                 setShowLogPayment={setShowLogPayment}
                 handleLogPayment={handleLogPayment}
