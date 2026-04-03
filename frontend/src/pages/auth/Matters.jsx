@@ -1,6 +1,6 @@
 import Sidebar from "../../components/Sidebar";
 import AppTopBar from "../../components/AppTopBar";
-import MattersBoard from "./MattersBoard";
+import MattersBoard from "../../components/Matters/MattersBoard";
 import { useState, useEffect, useMemo } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { createApi } from "../../components/utils/Api";

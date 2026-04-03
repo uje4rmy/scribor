@@ -1,18 +1,18 @@
-import Sidebar from "../Sidebar";
-import AppTopBar from "../AppTopBar";
+import Sidebar from "../../components/Sidebar";
+import AppTopBar from "../../components/AppTopBar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect, useMemo } from "react";
-import Oversight from "./Oversight";
-import Payments from "./Payments";
-import ProfileEditing from "./ProfileEditing";
-import SectionLabel from "./SectionLabel";
-import InputRow from "./InputRow";
+import Oversight from "../../components/ClientProfile/Oversight";
+import Payments from "../../components/ClientProfile/Payments";
+import ProfileEditing from "../../components/ClientProfile/ProfileEditing";
+import SectionLabel from "../../components/ClientProfile/SectionLabel";
+import InputRow from "../../components/ClientProfile/InputRow";
 import MATTER_BAND_VALUES from "../../constants/bandValues";
 import CLIENT_TYPES from "../../constants/clientTypes";
 import { format } from "date-fns";
-import Card from "./Card";
+import Card from "../../components/ClientProfile/Card";
 import { useParams } from "react-router";
-import { createApi } from "../utils/Api";
+import { createApi } from "../../components/utils/Api";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 
