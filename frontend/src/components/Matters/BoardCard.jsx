@@ -3,7 +3,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import BoardDropdownMenu from "./BoardDropdownMenu";
-import { capitalise } from "../../../components/utils/HelperFunctions";
+import { capitalise } from "../utils/HelperFunctions";
 
 const BoardCard = ({ intake, boardColumns, setMatters }) => {
   function levelColors(level) {

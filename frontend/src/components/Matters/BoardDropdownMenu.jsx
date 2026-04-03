@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ExternalLink, Download, FolderInput } from "lucide-react";
 import { Link } from "react-router";
-import { createApi } from "../../../components/utils/Api";
+import { createApi } from "../utils/Api";
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "sonner";
 
