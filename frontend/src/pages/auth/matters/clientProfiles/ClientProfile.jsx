@@ -8,7 +8,7 @@ import ProfileEditing from "./ProfileEditing";
 import SectionLabel from "../../../../components/clientProfiles/SectionLabel";
 import InputRow from "../../../../components/clientProfiles/InputRow";
 import MATTER_BAND_VALUES from "../../../../constants/bandValues";
-import TYPES from "../../../../components/clientProfiles/ClientTypes";
+import CLIENT_TYPES from "../../../../constants/clientTypes";
 import { format } from "date-fns";
 import Card from "../../../../components/clientProfiles/Card";
 import { useParams } from "react-router";
@@ -224,7 +224,7 @@ const ClientProfile = () => {
                         <InputRow
                           label="Client Type"
                           value={
-                            TYPES.find(
+                            CLIENT_TYPES.find(
                               (e) => e.type === clientProfile.client_type,
                             )?.label
                           }

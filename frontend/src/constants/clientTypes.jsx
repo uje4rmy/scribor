@@ -1,4 +1,4 @@
-const TYPES = [
+const CLIENT_TYPES = [
   {
     type: "individual",
     label: "Individual",
@@ -9,4 +9,4 @@ const TYPES = [
   { type: "trust", label: "Trust" },
 ];
 
-export default TYPES;
+export default CLIENT_TYPES;

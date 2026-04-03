@@ -1,4 +1,4 @@
-import TYPES from "./ClientTypes";
+import CLIENT_TYPES from "../../constants/clientTypes";
 import {
   Select,
   SelectContent,
@@ -12,17 +12,19 @@ import { memo } from "react";
 const ClientTypeDropdown = ({ value, onChange }) => {
   return (
     <Select
-      value={TYPES.find((e) => e.type === value).type}
+      value={CLIENT_TYPES.find((e) => e.type === value).type}
       onValueChange={(val) => {
         onChange(val);
       }}
     >
       <SelectTrigger className="mt-0.5 w-full rounded-md border shadow-none border-slate-200 px-2.5 py-1.5 text-sm">
-        <SelectValue placeholder={TYPES.find((e) => e.type === value).label} />
+        <SelectValue
+          placeholder={CLIENT_TYPES.find((e) => e.type === value).label}
+        />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {TYPES.map((e) => (
+          {CLIENT_TYPES.map((e) => (
             <SelectItem key={e.type} value={e.type}>
               {e.label}
             </SelectItem>
