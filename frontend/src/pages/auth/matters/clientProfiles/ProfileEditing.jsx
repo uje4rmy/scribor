@@ -1,4 +1,4 @@
-import PROFILE_FIELDS from "../../../../components/clientProfiles/ProfileFields";
+import PROFILE_FIELDS from "../../../../constants/profileFields";
 import InputRow from "../../../../components/clientProfiles/InputRow";
 import { useMemo, memo } from "react";
 import SectionField from "../../../../components/clientProfiles/SectionField";
