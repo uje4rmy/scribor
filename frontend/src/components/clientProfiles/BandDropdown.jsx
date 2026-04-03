@@ -1,4 +1,4 @@
-import MATTER_BAND_VALUES from "../../components/clientProfiles/BandValues";
+import MATTER_BAND_VALUES from "../../constants/bandValues";
 import {
   Select,
   SelectContent,

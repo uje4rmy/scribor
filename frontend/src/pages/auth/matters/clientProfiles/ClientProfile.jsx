@@ -7,7 +7,7 @@ import Payments from "./Payments";
 import ProfileEditing from "./ProfileEditing";
 import SectionLabel from "../../../../components/clientProfiles/SectionLabel";
 import InputRow from "../../../../components/clientProfiles/InputRow";
-import MATTER_BAND_VALUES from "../../../../components/clientProfiles/BandValues";
+import MATTER_BAND_VALUES from "../../../../constants/bandValues";
 import TYPES from "../../../../components/clientProfiles/ClientTypes";
 import { format } from "date-fns";
 import Card from "../../../../components/clientProfiles/Card";
@@ -15,7 +15,6 @@ import { useParams } from "react-router";
 import { createApi } from "../../../../components/utils/Api";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { Spinner } from "@/components/ui/spinner";
 
 function checkNull(field) {
   return field === null || field === "" ? "Not Provided" : field;
