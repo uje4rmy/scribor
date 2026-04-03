@@ -1,4 +1,4 @@
-const Topics = [
+const HELP_TOPICS = [
   {
     id: "getting-started",
     label: "Getting Started",
@@ -193,4 +193,4 @@ const Topics = [
   },
 ];
 
-export default Topics;
+export default HELP_TOPICS;

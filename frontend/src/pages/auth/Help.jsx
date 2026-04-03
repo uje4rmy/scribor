@@ -1,5 +1,5 @@
 import Sidebar from "../../components/Sidebar";
-import Topics from "../../components/variables/HelpTopics";
+import HELP_TOPICS from "../../constants/helpTopics";
 import AppTopBar from "../../components/AppTopBar";
 import { useState } from "react";
 import FAQAccordian from "../../components/FAQAccordian";
@@ -15,7 +15,8 @@ const Help = () => {
   ]);
   const [draftMessage, setDraftMessage] = useState("");
 
-  const currentTopic = Topics.find((t) => t.id === activeTopic) ?? Topics[0];
+  const currentTopic =
+    HELP_TOPICS.find((t) => t.id === activeTopic) ?? HELP_TOPICS[0];
 
   return (
     <div className="grid grid-cols-[224px_1fr] min-h-screen">
@@ -44,7 +45,7 @@ const Help = () => {
                 Topics
               </h2>
               <div className="space-y-1">
-                {Topics.map((topic) => (
+                {HELP_TOPICS.map((topic) => (
                   <button
                     key={topic.id}
                     type="button"
