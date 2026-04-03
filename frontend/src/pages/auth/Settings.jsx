@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import SettingsAccount from "./settingsTabs/Account";
-import Workspace from "./settingsTabs/Workspace";
-import Notifications from "./settingsTabs/Notifications";
-import Security from "./settingsTabs/Security";
+import SettingsAccount from "../../components/Settings/Account";
+import Workspace from "../../components/Settings/Workspace";
+import Notifications from "../../components/Settings/Notifications";
+import Security from "../../components/Settings/Security";
 
 const Settings = () => {
   const tabs = [
