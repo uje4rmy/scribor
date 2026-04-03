@@ -1,13 +1,13 @@
-import DatePickerTime from "../../../../components/DatePickerTime";
+import DatePickerTime from "../DatePickerTime";
 import { useState, useMemo } from "react";
-import DateRangeFilter from "../../../../components/ClientProfile/filters/DateRangeFilter";
-import StatusFilter from "../../../../components/ClientProfile/filters/StatusFilter";
-import OrderFilter from "../../../../components/ClientProfile/filters/OrderFilter";
-import PaymentTable from "../../../../components/ClientProfile/PaymentTable";
-import LogDropdown from "../../../../components/ClientProfile/LogDropdown";
+import DateRangeFilter from "./filters/DateRangeFilter";
+import StatusFilter from "./filters/StatusFilter";
+import OrderFilter from "./filters/OrderFilter";
+import PaymentTable from "./PaymentTable";
+import LogDropdown from "./LogDropdown";
 import { useForm, useWatch } from "react-hook-form";
 import { Controller } from "react-hook-form";
-import Currencies from "../../../../assets/currencies";
+import Currencies from "../../assets/currencies";
 
 const paidBy = [
   { value: "client", label: "Client" },

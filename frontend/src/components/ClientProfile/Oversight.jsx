@@ -1,4 +1,4 @@
-import SectionLabel from "../../../../components/ClientProfile/SectionLabel";
+import SectionLabel from "./SectionLabel";
 import {
   ResponsiveContainer,
   LineChart,
@@ -8,11 +8,8 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import Badge from "../../../../components/ClientProfile/Badge";
-import {
-  formatAmount,
-  capitalise,
-} from "../../../../components/utils/HelperFunctions";
+import Badge from "./Badge";
+import { formatAmount, capitalise } from "../utils/HelperFunctions";
 import { useMemo } from "react";
 
 const monthNames = [
