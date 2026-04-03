@@ -1,4 +1,4 @@
-import SectionLabel from "../../../../components/clientProfiles/SectionLabel";
+import SectionLabel from "../../../../components/ClientProfile/SectionLabel";
 import {
   ResponsiveContainer,
   LineChart,
@@ -8,7 +8,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import Badge from "../../../../components/clientProfiles/Badge";
+import Badge from "../../../../components/ClientProfile/Badge";
 import {
   formatAmount,
   capitalise,

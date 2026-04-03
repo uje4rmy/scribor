@@ -1,10 +1,10 @@
 import DatePickerTime from "../../../../components/DatePickerTime";
 import { useState, useMemo } from "react";
-import DateRangeFilter from "../../../../components/clientProfiles/filters/DateRangeFilter";
-import StatusFilter from "../../../../components/clientProfiles/filters/StatusFilter";
-import OrderFilter from "../../../../components/clientProfiles/filters/OrderFilter";
-import PaymentTable from "../../../../components/clientProfiles/PaymentTable";
-import LogDropdown from "../../../../components/clientProfiles/LogDropdown";
+import DateRangeFilter from "../../../../components/ClientProfile/filters/DateRangeFilter";
+import StatusFilter from "../../../../components/ClientProfile/filters/StatusFilter";
+import OrderFilter from "../../../../components/ClientProfile/filters/OrderFilter";
+import PaymentTable from "../../../../components/ClientProfile/PaymentTable";
+import LogDropdown from "../../../../components/ClientProfile/LogDropdown";
 import { useForm, useWatch } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import Currencies from "../../../../assets/currencies";

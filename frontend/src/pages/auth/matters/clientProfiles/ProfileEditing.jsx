@@ -1,7 +1,7 @@
 import PROFILE_FIELDS from "../../../../constants/profileFields";
-import InputRow from "../../../../components/clientProfiles/InputRow";
+import InputRow from "../../../../components/ClientProfile/InputRow";
 import { useMemo, memo } from "react";
-import SectionField from "../../../../components/clientProfiles/SectionField";
+import SectionField from "../../../../components/ClientProfile/SectionField";
 
 const ProfileEditing = ({
   entityDirectors,
