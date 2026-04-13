@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Controller } from "react-hook-form";
 import BooleanDropdown from "./BooleanDropdown";
 import BandDropdown from "./BandDropdown";
@@ -11,7 +10,7 @@ const Dropdowns = {
   type: ClientTypeDropdown,
   date: DatePicker,
 };
-const Field = ({ fieldKey, type, control, register }) => {
+const Field = ({ fieldKey, type, control }) => {
   if (Dropdowns[type]) {
     const Dropdown = Dropdowns[type];
     return (
@@ -27,21 +26,35 @@ const Field = ({ fieldKey, type, control, register }) => {
 
   if (type === "textarea") {
     return (
-      <textarea
-        {...register(fieldKey)}
-        rows={3}
-        className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+      <Controller
+        name={fieldKey}
+        control={control}
+        render={({ field }) => (
+          <textarea
+            {...field}
+            value={field.value ?? ""}
+            rows={3}
+            className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+          />
+        )}
       />
     );
   }
 
   return (
-    <input
-      {...register(fieldKey)}
-      type="text"
-      className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+    <Controller
+      name={fieldKey}
+      control={control}
+      render={({ field }) => (
+        <input
+          {...field}
+          value={field.value ?? ""}
+          type="text"
+          className="mt-0.5 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+        />
+      )}
     />
   );
 };
 
-export default memo(Field);
+export default Field;

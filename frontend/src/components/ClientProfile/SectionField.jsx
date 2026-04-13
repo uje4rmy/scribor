@@ -2,7 +2,7 @@ import { memo } from "react";
 import SectionLabel from "./SectionLabel";
 import Field from "./Field";
 
-const SectionField = memo(({ sectionKey, fields, control, register }) => {
+const SectionField = memo(({ sectionKey, fields, control }) => {
   function getSectionLabel(key) {
     switch (key) {
       case "client":
@@ -25,13 +25,7 @@ const SectionField = memo(({ sectionKey, fields, control, register }) => {
         {fields.map(({ key, label, type }) => (
           <div key={key} className={type === "textarea" ? "sm:col-span-2" : ""}>
             <label className="block text-xs text-slate-500">{label}</label>
-            <Field
-              key={key}
-              fieldKey={key}
-              type={type}
-              control={control}
-              register={register}
-            />
+            <Field key={key} fieldKey={key} type={type} control={control} />
           </div>
         ))}
       </div>

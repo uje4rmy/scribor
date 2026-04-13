@@ -1,25 +1,14 @@
 import PROFILE_FIELDS from "../../constants/profileFields";
 import InputRow from "./InputRow";
-import { useMemo, memo } from "react";
 import SectionField from "./SectionField";
 
-const ProfileEditing = ({
-  entityDirectors,
-  checkDirectors,
-  register,
-  control,
-}) => {
-  const sections = useMemo(
-    () => ["client", "contact", "role", "entity", "matter"],
-    [],
-  );
+const ProfileEditing = ({ entityDirectors, checkDirectors, control }) => {
+  const sections = ["client", "contact", "role", "entity", "matter"];
 
-  const fieldsBySection = useMemo(() => {
-    return sections.reduce((acc, sectionKey) => {
-      acc[sectionKey] = PROFILE_FIELDS.filter((f) => f.section === sectionKey);
-      return acc;
-    }, {});
-  }, [sections]);
+  const fieldsBySection = sections.reduce((acc, sectionKey) => {
+    acc[sectionKey] = PROFILE_FIELDS.filter((f) => f.section === sectionKey);
+    return acc;
+  }, {});
 
   return (
     <>
@@ -34,7 +23,6 @@ const ProfileEditing = ({
               sectionKey={sectionKey}
               fields={fields}
               control={control}
-              register={register}
             />
           </div>
         );
@@ -51,4 +39,4 @@ const ProfileEditing = ({
   );
 };
 
-export default memo(ProfileEditing);
+export default ProfileEditing;

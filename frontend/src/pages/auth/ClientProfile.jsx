@@ -46,7 +46,6 @@ const ClientProfile = () => {
   const [loading, setLoading] = useState(true);
   const [showLogPayment, setShowLogPayment] = useState(false);
   const [error, setError] = useState(null);
-  const [resetFormKey, setFormKey] = useState(0);
 
   const { user, isLoading, getAccessTokenSilently } = useAuth0();
   const api = useMemo(
@@ -61,7 +60,7 @@ const ClientProfile = () => {
     reset,
     control,
     formState: { errors, dirtyFields: boolDirty },
-  } = useForm({ defaultValues: { ...clientProfile } });
+  } = useForm({ defaultValues: {} });
 
   useEffect(() => {
     if (isLoading || !user) return;
@@ -96,10 +95,12 @@ const ClientProfile = () => {
 
       await api.put("/matters/update-client-profile/", dirtyFields);
 
-      setClientProfile((prev) => ({
-        ...prev,
+      const newProfile = {
+        ...clientProfile,
         ...dirtyFields,
-      }));
+      };
+      setClientProfile(newProfile);
+      reset(newProfile);
       setProfileEditing(false);
     } catch (error) {
       if (error.response?.status === 429) {
@@ -112,7 +113,6 @@ const ClientProfile = () => {
 
   function cancelProfileEdit() {
     reset(clientProfile);
-    setFormKey((k) => k + 1);
     setProfileEditing(false);
   }
 
@@ -206,10 +206,8 @@ const ClientProfile = () => {
                   >
                     <div className={profileEditing ? "block" : "hidden"}>
                       <ProfileEditing
-                        key={resetFormKey}
                         entityDirectors={clientProfile.entity_directors}
                         checkDirectors={checkDirectors}
-                        register={register}
                         control={control}
                       />
                     </div>
