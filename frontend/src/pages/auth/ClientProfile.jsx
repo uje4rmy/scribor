@@ -15,6 +15,8 @@ import { useParams } from "react-router";
 import { createApi } from "../../components/utils/Api";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import profileSchema from "../../constants/profileSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 function checkNull(field) {
   return field === null || field === "" ? "Not Provided" : field;
@@ -46,6 +48,7 @@ const ClientProfile = () => {
   const [loading, setLoading] = useState(true);
   const [showLogPayment, setShowLogPayment] = useState(false);
   const [error, setError] = useState(null);
+  const [lastToastTime, setLastToastTime] = useState(0);
 
   const { user, isLoading, getAccessTokenSilently } = useAuth0();
   const api = useMemo(
@@ -55,12 +58,11 @@ const ClientProfile = () => {
   const { clientId } = useParams();
 
   const {
-    register,
     handleSubmit,
     reset,
     control,
     formState: { errors, dirtyFields: boolDirty },
-  } = useForm({ defaultValues: {} });
+  } = useForm({ resolver: zodResolver(profileSchema), mode: "onSubmit" });
 
   useEffect(() => {
     if (isLoading || !user) return;
@@ -69,10 +71,13 @@ const ClientProfile = () => {
       try {
         const resProfile = await api.get("/matters/client-profile/" + clientId);
         const resPayments = await api.get("/payments/" + clientId);
-
-        setClientProfile(resProfile.data[0]);
+        const boolConvert = {
+          ...resProfile.data[0],
+          matter_trust_expected: !!resProfile.data[0].matter_trust_expected,
+        };
+        setClientProfile(boolConvert);
         setPayments(resPayments.data);
-        reset(resProfile.data[0]);
+        reset(boolConvert);
       } catch (error) {
         setError(error);
       } finally {
@@ -86,8 +91,13 @@ const ClientProfile = () => {
 
   async function saveProfileEdit(formData) {
     try {
+      const submitDirtyFields = getDirtyFields(boolDirty, formData);
+
+      if (Object.keys(submitDirtyFields).length === 0)
+        return setProfileEditing(false);
+
       const dirtyFields = {
-        ...getDirtyFields(boolDirty, formData),
+        ...submitDirtyFields,
         client_id: clientProfile.client_id,
         matter_id: clientProfile.matter_id,
         entity_id: clientProfile.entity_id,
@@ -148,6 +158,18 @@ const ClientProfile = () => {
     }
   }
 
+  const onSubmit = handleSubmit(saveProfileEdit, (errors) => {
+    const now = Date.now();
+    if (now - lastToastTime > 2000) {
+      const errorCount = Object.keys(errors).length;
+      toast.error(
+        `Please fix ${errorCount} error${errorCount > 1 ? "s" : ""} in the form.`,
+        { duration: 2000 },
+      );
+    }
+    setLastToastTime(now);
+  });
+
   return (
     <div className="grid grid-cols-[224px_1fr] min-h-screen">
       <div className="sidebar">
@@ -169,10 +191,7 @@ const ClientProfile = () => {
           ) : (
             <>
               <div className="grid gap-4 md:grid-cols-2 lg:gap-6">
-                <form
-                  onSubmit={handleSubmit(saveProfileEdit)}
-                  className="contents"
-                >
+                <form onSubmit={onSubmit} className="contents">
                   <Card
                     title="Client Profile"
                     className="min-h-0"
