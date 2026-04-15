@@ -5,6 +5,7 @@ const Currencies = [
     symbol: "A$",
     decimal_digits: 2,
     countries: ["Australia"],
+    countryCode: "AU",
   },
   {
     value: "BRL",
@@ -12,6 +13,7 @@ const Currencies = [
     symbol: "R$",
     decimal_digits: 2,
     countries: ["Brazil"],
+    countryCode: "BR",
   },
   {
     value: "GBP",
@@ -19,6 +21,7 @@ const Currencies = [
     symbol: "£",
     decimal_digits: 2,
     countries: ["United Kingdom"],
+    countryCode: "GB",
   },
   {
     value: "CAD",
@@ -26,6 +29,7 @@ const Currencies = [
     symbol: "C$",
     decimal_digits: 2,
     countries: ["Canada"],
+    countryCode: "CA",
   },
   {
     value: "CNY",
@@ -33,6 +37,7 @@ const Currencies = [
     symbol: "¥",
     decimal_digits: 2,
     countries: ["China"],
+    countryCode: "CN",
   },
   {
     value: "CZK",
@@ -40,6 +45,7 @@ const Currencies = [
     symbol: "Kč",
     decimal_digits: 2,
     countries: ["Czech Republic"],
+    countryCode: "CZ",
   },
   {
     value: "DKK",
@@ -47,6 +53,7 @@ const Currencies = [
     symbol: "kr",
     decimal_digits: 2,
     countries: ["Denmark"],
+    countryCode: "DK",
   },
   {
     value: "EUR",
@@ -54,6 +61,7 @@ const Currencies = [
     symbol: "€",
     decimal_digits: 2,
     countries: ["Germany", "France", "Italy", "Spain", "Netherlands"],
+    countryCode: "EU",
   },
   {
     value: "HKD",
@@ -61,6 +69,7 @@ const Currencies = [
     symbol: "HK$",
     decimal_digits: 2,
     countries: ["Hong Kong"],
+    countryCode: "HK",
   },
   {
     value: "INR",
@@ -68,6 +77,7 @@ const Currencies = [
     symbol: "₹",
     decimal_digits: 2,
     countries: ["India"],
+    countryCode: "IN",
   },
   {
     value: "IDR",
@@ -75,6 +85,7 @@ const Currencies = [
     symbol: "Rp",
     decimal_digits: 0,
     countries: ["Indonesia"],
+    countryCode: "ID",
   },
   {
     value: "ILS",
@@ -82,6 +93,7 @@ const Currencies = [
     symbol: "₪",
     decimal_digits: 2,
     countries: ["Israel"],
+    countryCode: "IL",
   },
   {
     value: "JPY",
@@ -89,6 +101,7 @@ const Currencies = [
     symbol: "¥",
     decimal_digits: 0,
     countries: ["Japan"],
+    countryCode: "JP",
   },
   {
     value: "MYR",
@@ -96,6 +109,7 @@ const Currencies = [
     symbol: "RM",
     decimal_digits: 2,
     countries: ["Malaysia"],
+    countryCode: "MY",
   },
   {
     value: "MXN",
@@ -103,6 +117,7 @@ const Currencies = [
     symbol: "$",
     decimal_digits: 2,
     countries: ["Mexico"],
+    countryCode: "MX",
   },
   {
     value: "NZD",
@@ -110,6 +125,7 @@ const Currencies = [
     symbol: "NZ$",
     decimal_digits: 2,
     countries: ["New Zealand"],
+    countryCode: "NZ",
   },
   {
     value: "NOK",
@@ -117,6 +133,7 @@ const Currencies = [
     symbol: "kr",
     decimal_digits: 2,
     countries: ["Norway"],
+    countryCode: "NO",
   },
   {
     value: "PHP",
@@ -124,6 +141,7 @@ const Currencies = [
     symbol: "₱",
     decimal_digits: 2,
     countries: ["Philippines"],
+    countryCode: "PH",
   },
   {
     value: "PLN",
@@ -131,6 +149,7 @@ const Currencies = [
     symbol: "zł",
     decimal_digits: 2,
     countries: ["Poland"],
+    countryCode: "PL",
   },
   {
     value: "RUB",
@@ -138,6 +157,7 @@ const Currencies = [
     symbol: "₽",
     decimal_digits: 2,
     countries: ["Russia"],
+    countryCode: "RU",
   },
   {
     value: "SAR",
@@ -145,6 +165,7 @@ const Currencies = [
     symbol: "﷼",
     decimal_digits: 2,
     countries: ["Saudi Arabia"],
+    countryCode: "SA",
   },
   {
     value: "SGD",
@@ -152,6 +173,7 @@ const Currencies = [
     symbol: "S$",
     decimal_digits: 2,
     countries: ["Singapore"],
+    countryCode: "SG",
   },
   {
     value: "ZAR",
@@ -159,14 +181,15 @@ const Currencies = [
     symbol: "R",
     decimal_digits: 2,
     countries: ["South Africa"],
+    countryCode: "ZA",
   },
-
   {
     value: "KRW",
     name: "South Korean Won",
     symbol: "₩",
     decimal_digits: 0,
     countries: ["South Korea"],
+    countryCode: "KR",
   },
   {
     value: "SEK",
@@ -174,6 +197,7 @@ const Currencies = [
     symbol: "kr",
     decimal_digits: 2,
     countries: ["Sweden"],
+    countryCode: "SE",
   },
   {
     value: "CHF",
@@ -181,14 +205,15 @@ const Currencies = [
     symbol: "CHF",
     decimal_digits: 2,
     countries: ["Switzerland", "Liechtenstein"],
+    countryCode: "CH",
   },
-
   {
     value: "THB",
     name: "Thai Baht",
     symbol: "฿",
     decimal_digits: 2,
     countries: ["Thailand"],
+    countryCode: "TH",
   },
   {
     value: "TRY",
@@ -196,6 +221,7 @@ const Currencies = [
     symbol: "₺",
     decimal_digits: 2,
     countries: ["Turkey"],
+    countryCode: "TR",
   },
   {
     value: "USD",
@@ -203,6 +229,7 @@ const Currencies = [
     symbol: "$",
     decimal_digits: 2,
     countries: ["United States", "Ecuador", "El Salvador"],
+    countryCode: "US",
   },
   {
     value: "AED",
@@ -210,6 +237,7 @@ const Currencies = [
     symbol: "د.إ",
     decimal_digits: 2,
     countries: ["United Arab Emirates"],
+    countryCode: "AE",
   },
 ];
 

@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { memo } from "react";
+import ReactCountryFlag from "react-country-flag";
 
 const SelectDropdown = ({ value, onChange, options, placeholder }) => {
   return (
@@ -18,7 +19,21 @@ const SelectDropdown = ({ value, onChange, options, placeholder }) => {
         <SelectGroup>
           {options.map((e) => (
             <SelectItem key={e.value} value={e.value}>
-              {e.label ? e.label : e.name ? `${e.name} (${e.value})` : e.value}
+              {e.name ? (
+                <div className="flex gap-2">
+                  <ReactCountryFlag
+                    countryCode={e.countryCode}
+                    svg={true}
+                    className="rounded-sm"
+                    style={{ width: "1.5em", height: "1.5em" }}
+                  />
+                  <span>{`${e.name} (${e.value})`}</span>
+                </div>
+              ) : e.label ? (
+                e.label
+              ) : (
+                e.value
+              )}
             </SelectItem>
           ))}
         </SelectGroup>

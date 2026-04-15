@@ -6,7 +6,7 @@ import OrderFilter from "./filters/OrderFilter";
 import PaymentTable from "./PaymentTable";
 import { useForm, useWatch } from "react-hook-form";
 import { Controller } from "react-hook-form";
-import Currencies from "../../assets/currencies";
+import Currencies from "../../constants/currencies";
 import SelectDropdown from "../SelectDropdown";
 
 const paidBy = [
