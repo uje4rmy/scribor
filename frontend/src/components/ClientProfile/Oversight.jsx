@@ -119,7 +119,7 @@ const Oversight = ({ clientProfile, payments }) => {
           Unusual Activity
         </span>
       )}
-      <div className="mt-3 h-40 min-h-[120px] min-w-0">
+      <div className="mt-3 h-40 min-h-[120px] min-w-0 chart-container">
         {payments.length === 0 ? (
           <div className="flex h-full items-center justify-center text-xs text-slate-400">
             No data yet
