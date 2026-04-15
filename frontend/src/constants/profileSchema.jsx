@@ -27,33 +27,25 @@ const profileSchema = z.object({
     .regex(/^\d{9}$/, "ACN must be exactly 9 digits.")
     .or(z.literal("")),
   client_email: z.email(),
-  client_mobile: z
-    .string()
-    .regex(/^\+?[1-9]\d{7,14}$/, "Invalid phone number."),
-  client_address: z.string(),
+  client_mobile: z.string().regex(/^4\d{8}$/, "Invalid phone number."),
+  client_address: z.string().max(100),
   client_capacity: z.string().max(20),
   client_authority: z.string().max(35),
   client_instructing_person: z.string().max(20),
   entity_name: z.string().max(20),
   entity_trustee: z.string().max(15),
   entity_type: z.string().max(15),
-  entity_address: z.string(),
-  matter_purpose: z.string().max(50),
+  entity_address: z.string().max(100),
+  matter_purpose: z.string().max(100),
   matter_duration: z.string().max(15).nullish(),
   matter_frequency: z.string().max(15),
   matter_trust_expected: z.boolean(),
   matter_type: z.string().max(15),
-  matter_description: z.string().max(50),
-  matter_jurisdiction: z.enum([
-    "QLD",
-    "ACT",
-    "VIC",
-    "WA",
-    "NT",
-    "TAS",
-    "NSW",
-    "SA",
-  ]),
+  matter_description: z.string().max(100),
+  matter_jurisdiction: z.enum(
+    ["QLD", "ACT", "VIC", "WA", "NT", "TAS", "NSW", "SA"],
+    { error: "Enter a valid jurisdiction." },
+  ),
   matter_band_value: z.int().min(1).max(7),
 });
 

@@ -10,7 +10,7 @@ const PROFILE_FIELDS = [
   { key: "client_abn", label: "ABN", section: "client" },
   { key: "client_acn", label: "ACN", section: "client" },
   { key: "client_email", label: "Email", section: "contact" },
-  { key: "client_mobile", label: "Mobile", section: "contact" },
+  { key: "client_mobile", label: "Mobile", section: "contact", type: "phone" },
   {
     key: "client_address",
     label: "Address",
