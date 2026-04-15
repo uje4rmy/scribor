@@ -1,12 +1,12 @@
 const CLIENT_TYPES = [
   {
-    type: "individual",
+    value: "individual",
     label: "Individual",
   },
-  { type: "otherentity", label: "Other Entity" },
-  { type: "company", label: "Company" },
-  { type: "partnership", label: "Partnership" },
-  { type: "trust", label: "Trust" },
+  { value: "otherentity", label: "Other Entity" },
+  { value: "company", label: "Company" },
+  { value: "partnership", label: "Partnership" },
+  { value: "trust", label: "Trust" },
 ];
 
 export default CLIENT_TYPES;

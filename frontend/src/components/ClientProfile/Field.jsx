@@ -1,31 +1,66 @@
 import { Controller } from "react-hook-form";
-import BooleanDropdown from "./BooleanDropdown";
-import BandDropdown from "./BandDropdown";
-import ClientTypeDropdown from "./ClientTypeDropdown";
 import { DatePicker } from "./DatePicker";
 import { useState } from "react";
 import PhoneInput from "./PhoneInput";
 import { Input } from "@/components/ui/input";
+import SelectDropdown from "../SelectDropdown";
+import CLIENT_TYPES from "../../constants/clientTypes";
+import MATTER_BAND_VALUES from "../../constants/bandValues";
 
-const Dropdowns = {
-  boolean: BooleanDropdown,
-  band: BandDropdown,
-  type: ClientTypeDropdown,
-  date: DatePicker,
-};
+const Dropdowns = ["trustExpected", "band", "clientType", "date"];
+
+const matterTrustOptions = [
+  { value: "yes", label: "Yes" },
+  { value: "no", label: "No" },
+];
 
 const Field = ({ fieldKey, type, control }) => {
   const [focusedField, setFocusedField] = useState(null);
 
-  if (Dropdowns[type]) {
-    const Dropdown = Dropdowns[type];
+  if (Dropdowns.includes(type)) {
     return (
       <Controller
         name={fieldKey}
         control={control}
-        render={({ field }) => (
-          <Dropdown value={field.value} onChange={field.onChange} />
-        )}
+        render={({ field }) => {
+          switch (type) {
+            case "trustExpected":
+              return (
+                <SelectDropdown
+                  value={field.value ? "yes" : "no"}
+                  onChange={(val) => {
+                    field.onChange(val === "yes" ? true : false);
+                  }}
+                  options={matterTrustOptions}
+                />
+              );
+            case "clientType":
+              return (
+                <SelectDropdown
+                  value={
+                    CLIENT_TYPES.find((e) => e.value === field.value).value
+                  }
+                  onChange={field.onChange}
+                  options={CLIENT_TYPES}
+                />
+              );
+            case "band":
+              return (
+                <SelectDropdown
+                  value={
+                    MATTER_BAND_VALUES.find((b) => b.value === field.value)
+                      .value
+                  }
+                  onChange={(val) => field.onChange(parseInt(val))}
+                  options={MATTER_BAND_VALUES}
+                />
+              );
+            default:
+              return (
+                <DatePicker value={field.value} onChange={field.onChange} />
+              );
+          }
+        }}
       />
     );
   }

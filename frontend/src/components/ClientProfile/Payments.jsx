@@ -4,10 +4,10 @@ import DateRangeFilter from "./filters/DateRangeFilter";
 import StatusFilter from "./filters/StatusFilter";
 import OrderFilter from "./filters/OrderFilter";
 import PaymentTable from "./PaymentTable";
-import LogDropdown from "./LogDropdown";
 import { useForm, useWatch } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import Currencies from "../../assets/currencies";
+import SelectDropdown from "../SelectDropdown";
 
 const paidBy = [
   { value: "client", label: "Client" },
@@ -169,7 +169,7 @@ const Payments = ({
                 name="payment_currency"
                 control={control}
                 render={({ field }) => (
-                  <LogDropdown
+                  <SelectDropdown
                     value={field.value}
                     onChange={field.onChange}
                     options={Currencies}
@@ -184,7 +184,7 @@ const Payments = ({
                 name="payment_paidby"
                 control={control}
                 render={({ field }) => (
-                  <LogDropdown
+                  <SelectDropdown
                     value={field.value}
                     onChange={field.onChange}
                     options={paidBy}
@@ -215,7 +215,7 @@ const Payments = ({
                 name="payment_destination"
                 control={control}
                 render={({ field }) => (
-                  <LogDropdown
+                  <SelectDropdown
                     value={field.value}
                     onChange={field.onChange}
                     options={accounts}
@@ -232,7 +232,7 @@ const Payments = ({
                 name="payment_method"
                 control={control}
                 render={({ field }) => (
-                  <LogDropdown
+                  <SelectDropdown
                     value={field.value}
                     onChange={field.onChange}
                     options={methods}
@@ -247,7 +247,7 @@ const Payments = ({
                 name="payment_status"
                 control={control}
                 render={({ field }) => (
-                  <LogDropdown
+                  <SelectDropdown
                     value={field.value}
                     onChange={field.onChange}
                     options={status}

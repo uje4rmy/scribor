@@ -1,6 +1,11 @@
 const PROFILE_FIELDS = [
   { key: "client_fullname", label: "Full Name", section: "client" },
-  { key: "client_type", label: "Client Type", section: "client", type: "type" },
+  {
+    key: "client_type",
+    label: "Client Type",
+    section: "client",
+    type: "clientType",
+  },
   {
     key: "client_dob",
     label: "Date of Birth",
@@ -53,7 +58,7 @@ const PROFILE_FIELDS = [
     key: "matter_trust_expected",
     label: "Trust Account Expected",
     section: "matter",
-    type: "boolean",
+    type: "trustExpected",
   },
   { key: "matter_type", label: "Matter type", section: "matter" },
   {

@@ -242,7 +242,7 @@ const ClientProfile = () => {
                           label="Client Type"
                           value={
                             CLIENT_TYPES.find(
-                              (e) => e.type === clientProfile.client_type,
+                              (e) => e.value === clientProfile.client_type,
                             )?.label
                           }
                         />

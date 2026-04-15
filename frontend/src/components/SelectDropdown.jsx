@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import { memo } from "react";
 
-const LogDropdown = ({ value, onChange, options, placeholder }) => {
+const SelectDropdown = ({ value, onChange, options, placeholder }) => {
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="mt-0.5 w-full rounded-md border shadow-none bg-white border-slate-200 px-2.5 py-1.5 text-sm data-[placeholder]:text-black">
@@ -27,4 +27,4 @@ const LogDropdown = ({ value, onChange, options, placeholder }) => {
   );
 };
 
-export default memo(LogDropdown);
+export default memo(SelectDropdown);
